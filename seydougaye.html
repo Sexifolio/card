@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seydou GAYE - Chef de Projet SHIELD-G</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #002395;
+            --accent-red: #EF4135;
+            --dark-text: #1a1a1a;
+            --light-gray: #f8f9fa;
+            --border-gray: #e8ecf1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #e5ecf4 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card-container {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 25px 80px rgba(0, 35, 149, 0.12), 0 5px 20px rgba(239, 65, 53, 0.08);
+            overflow: hidden;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header section with logo */
+        .card-header {
+            background: white;
+            padding: 28px 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 3px solid;
+            border-image: linear-gradient(90deg, var(--primary-blue) 0%, var(--accent-red) 100%) 1;
+            position: relative;
+        }
+
+        .card-header::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-blue) 0%, var(--accent-red) 100%);
+        }
+
+        .logo {
+            max-width: 160px;
+            height: auto;
+            filter: drop-shadow(0 2px 4px rgba(0, 35, 149, 0.08));
+        }
+
+        .card-content {
+            padding: 40px 32px;
+        }
+
+        /* Name and title section */
+        .profile-section {
+            margin-bottom: 32px;
+            text-align: center;
+            border-bottom: 2px solid var(--border-gray);
+            padding-bottom: 32px;
+        }
+
+        .name {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .title {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--accent-red);
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            margin-bottom: 16px;
+        }
+
+        .regions {
+            font-size: 13px;
+            color: #444;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .department {
+            font-size: 12px;
+            color: #666;
+            margin-top: 12px;
+            font-weight: 500;
+        }
+
+        /* Contact information */
+        .contact-section {
+            margin-bottom: 12px;
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 18px;
+            display: block;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 18px;
+            animation: fadeIn 0.8s ease-out backwards;
+        }
+
+        .contact-item:nth-child(2) { animation-delay: 0.1s; }
+        .contact-item:nth-child(3) { animation-delay: 0.2s; }
+        .contact-item:nth-child(4) { animation-delay: 0.3s; }
+        .contact-item:nth-child(5) { animation-delay: 0.4s; }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .contact-icon {
+            width: 36px;
+            color: var(--accent-red);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .contact-text {
+            flex: 1;
+            font-size: 13px;
+            color: #333;
+            word-break: break-word;
+            line-height: 1.6;
+        }
+
+        .contact-text a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.2s ease;
+        }
+
+        .contact-item a:hover {
+            color: var(--accent-red);
+        }
+
+        /* Action Button */
+        .action-button {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #003fa3 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0, 35, 149, 0.2);
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 35, 149, 0.3);
+            background: linear-gradient(135deg, #003fa3 0%, var(--primary-blue) 100%);
+        }
+
+        .action-button:active {
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        .card-footer {
+            background: linear-gradient(135deg, #f8f9fa 0%, #f0f4f8 100%);
+            padding: 20px 32px;
+            text-align: center;
+            border-top: 1px solid var(--border-gray);
+        }
+
+        .add-contact-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-red) 100%);
+            color: white;
+            padding: 12px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 35, 149, 0.25);
+            text-decoration: none;
+        }
+
+        .add-contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 35, 149, 0.35);
+        }
+
+        .add-contact-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .card-content {
+                padding: 32px 24px;
+            }
+
+            .card-header {
+                padding: 24px 24px;
+            }
+
+            .name {
+                font-size: 24px;
+            }
+
+            .contact-text {
+                font-size: 12px;
+            }
+
+            .logo {
+                max-width: 140px;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            html, body {
+                background: white;
+            }
+
+            .card-container {
+                max-width: 100%;
+                box-shadow: none;
+                border-radius: 0;
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <div class="card-header">
+            <img src="https://upload.wikimedia.org/wikipedia/fr/b/b1/Ef-logo-2020.png" alt="Expertise France" class="logo">
+        </div>
+        
+        <div class="card-content">
+            <!-- Profile Section -->
+            <div class="profile-section">
+                <div class="name">SEYDOU GAYE</div>
+                <div class="title">Chef de Projet SHIELD-G</div>
+                <div class="regions">Bénin • Côte d'Ivoire • Ghana • Togo</div>
+                <div class="department">Paix Stabilité Sécurité • Pôle RFDS</div>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="contact-section">
+                <span class="section-label">Contact</span>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="contact-text">
+                        <a href="tel:+22901668939328">+229 01 66 89 39 28</a>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-text">
+                        <a href="mailto:seydou.gaye@expertisefrance.fr">seydou.gaye@expertisefrance.fr</a>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div class="contact-text">
+                        <a href="https://www.expertisefrance.fr" target="_blank">www.expertisefrance.fr</a>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-pin"></i>
+                    </div>
+                    <div class="contact-text">
+                        Rue 12.271, Cadjèhoun<br>Cotonou, Bénin
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer with Add to Contact Button -->
+        <div class="card-footer">
+            <button class="add-contact-btn" onclick="downloadVCard()">
+                <i class="fas fa-plus"></i> Add to Contact
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function downloadVCard() {
+            const vCardContent = `BEGIN:VCARD
+VERSION:3.0
+PRODID:-//Expertise France//Digital Business Card//EN
+FN:Seydou GAYE
+N:GAYE;Seydou;;;
+TITLE:Chef de Projet SHIELD-G
+ORG:Expertise France;Département Paix Stabilité Sécurité;Pôle RFDS
+TEL;TYPE=WORK,VOICE:+229 01 66 89 39 28
+EMAIL;TYPE=WORK:seydou.gaye@expertisefrance.fr
+ADR;TYPE=WORK:;;Rue 12.271 Cadjèhoun;Cotonou;;Littoral;Bénin
+URL;TYPE=WORK:https://www.expertisefrance.fr
+NOTE:Chef de Projet SHIELD-G - Bénin - Côte d'Ivoire - Ghana - Togo\\nDépartement: Paix Stabilité Sécurité\\nPôle: RFDS
+REV:2025-05-11T00:00:00Z
+END:VCARD`;
+
+            // Create a Blob from the vCard content
+            const blob = new Blob([vCardContent], { type: 'text/vcard' });
+            
+            // Create a temporary URL for the blob
+            const url = window.URL.createObjectURL(blob);
+            
+            // Create a temporary link element
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'seydou-gaye.vcf';
+            
+            // Trigger the download
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Clean up the URL
+            window.URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
