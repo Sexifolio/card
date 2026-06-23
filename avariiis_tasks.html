@@ -1,0 +1,2252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Avariiis — Task Planner</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --soft: #fbf9ff;
+      --soft-2: #fff8fc;
+      --line: #eee8f6;
+      --line-strong: #e3d6f1;
+      --text: #221b2b;
+      --muted: #9a8ca8;
+      --faded: #b8adbf;
+      --purple: #6d28d9;
+      --purple-soft: #f1e8ff;
+      --pink: #db5aa8;
+      --pink-soft: #fff1f8;
+      --danger: #d94848;
+      --danger-soft: #fff4f4;
+      --success: #2f8a5b;
+      --success-soft: #f1fff6;
+      --warning: #a46715;
+      --warning-soft: #fff8ed;
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Verdana, Geneva, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 400;
+    }
+
+    button, input, select, textarea { font-family: inherit; }
+
+    .app {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 24px 24px 42px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(150px, 1fr) auto auto;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .brand-block { min-width: 145px; }
+
+    .top-metrics-area {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      min-width: 0;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    h1 {
+      font-size: 1.4rem;
+      color: var(--purple);
+      letter-spacing: -0.04em;
+      font-weight: 500;
+    }
+
+    h2 {
+      font-size: 0.86rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    h3 {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 400;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 8px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+    }
+
+    .btn {
+      border: 1px solid transparent;
+      background: var(--purple);
+      color: white;
+      border-radius: 8px;
+      padding: 10px 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      font-weight: 400;
+      transition: background 0.16s ease, border-color 0.16s ease, opacity 0.16s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover { opacity: 0.9; }
+    .btn.active { background: var(--purple-soft); color: var(--purple); border-color: #d9c4ff; }
+
+    .btn.light {
+      background: white;
+      color: var(--text);
+      border-color: var(--line);
+    }
+
+    .btn.soft {
+      background: var(--purple-soft);
+      color: var(--purple);
+      border-color: #e9d5ff;
+    }
+
+    .btn.danger {
+      background: var(--danger-soft);
+      color: var(--danger);
+      border-color: #ffe0e0;
+    }
+
+    .btn.small {
+      padding: 7px 8px;
+      font-size: 0.75rem;
+      border-radius: 7px;
+    }
+
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--muted);
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .icon-btn:hover,
+    .icon-btn.active {
+      color: var(--purple);
+      border-color: #dac4ff;
+      background: var(--purple-soft);
+    }
+
+    .settings-wrap { position: relative; }
+
+    .settings-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 44px;
+      z-index: 80;
+      min-width: 230px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 8px;
+    }
+
+    .settings-menu.open { display: grid; gap: 7px; }
+    .settings-menu .btn { justify-content: flex-start; width: 100%; }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 282px minmax(0, 1fr) 330px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .sidebar,
+    .rightbar {
+      position: sticky;
+      top: 14px;
+      display: grid;
+      gap: 14px;
+      opacity: 0.72;
+      transition: opacity 0.16s ease;
+    }
+
+    .sidebar:hover,
+    .sidebar:focus-within,
+    .rightbar:hover,
+    .rightbar:focus-within { opacity: 1; }
+
+    .workspace {
+      display: grid;
+      gap: 14px;
+      opacity: 1;
+    }
+
+    .card,
+    .timeline {
+      border: 1px solid var(--line);
+      background: white;
+      border-radius: var(--radius);
+    }
+
+    .card { padding: 14px; }
+
+    .side-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .launch-summary {
+      border: 1px solid var(--line-strong);
+      background: var(--soft);
+      border-radius: 8px;
+      padding: 15px 13px;
+      margin-bottom: 12px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .launch-summary small { color: var(--muted); }
+    .launch-summary .launch-name { color: var(--purple); font-size: 1.18rem; line-height: 1.22; }
+    #launchDateText { font-size: 0.9rem; color: var(--text); }
+    #launchCountdown { font-size: 0.75rem; }
+
+    .plan-list { display: grid; gap: 8px; }
+
+    .plan-item {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: white;
+      border-radius: 8px;
+      padding: 8px;
+      display: grid;
+      gap: 7px;
+      color: var(--muted);
+    }
+
+    .plan-item:hover,
+    .plan-item.active {
+      border-color: #d9c4ff;
+      background: var(--soft);
+      color: var(--text);
+    }
+
+    .plan-filter {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 28px 1fr auto;
+      gap: 9px;
+      align-items: start;
+      color: inherit;
+      font: inherit;
+    }
+
+    .plan-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      background: var(--purple-soft);
+      color: var(--purple);
+      font-size: 0.86rem;
+      border: 1px solid #e8d8ff;
+    }
+
+    .plan-main { display: grid; gap: 5px; min-width: 0; }
+    .plan-title { color: var(--text); font-size: 0.82rem; }
+    .plan-goal { font-size: 0.72rem; line-height: 1.35; color: var(--muted); }
+    .plan-date { font-size: 0.68rem; color: var(--faded); white-space: nowrap; }
+    .plan-count { font-size: 0.68rem; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; align-self: start; }
+
+    .plan-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-left: 37px;
+    }
+
+    .tiny-btn {
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--muted);
+      border-radius: 7px;
+      padding: 5px 7px;
+      font-size: 0.69rem;
+      cursor: pointer;
+    }
+
+    .tiny-btn:hover { color: var(--purple); border-color: #d9c4ff; }
+
+    .goal-panel {
+      display: none;
+      margin-left: 37px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.72);
+      padding: 9px;
+      gap: 8px;
+    }
+
+    .goal-panel.open { display: grid; }
+    .goal-description { font-size: 0.73rem; color: var(--muted); line-height: 1.45; }
+    .goal-progress-row { display: grid; grid-template-columns: auto 54px auto 1fr; gap: 6px; align-items: center; }
+    .goal-number {
+      min-height: 30px;
+      text-align: center;
+      padding: 0 5px;
+      border-radius: 7px;
+      font-size: 0.74rem;
+    }
+    .goal-status { font-size: 0.7rem; color: var(--muted); }
+
+    .top-tools {
+      display: grid;
+      gap: 9px;
+    }
+
+    .filter-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .filter-row .controls {
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+      width: auto;
+      max-width: 100%;
+    }
+
+    .filter-row .btn,
+    .filter-row .select {
+      height: 36px;
+      min-height: 36px;
+    }
+
+    .searchbox { position: relative; width: 100%; }
+    .searchbox i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+    }
+
+    .input,
+    .select,
+    .textarea,
+    .people-toggle {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: var(--soft);
+      color: var(--text);
+      border-radius: 8px;
+      min-height: 40px;
+      padding: 0 12px;
+      outline: none;
+      font-size: 0.82rem;
+      font-weight: 400;
+    }
+
+    .textarea {
+      min-height: 86px;
+      padding: 12px;
+      line-height: 1.45;
+      resize: vertical;
+    }
+
+    .searchbox .input {
+      height: 46px;
+      padding-left: 40px;
+      background: white;
+      border-color: var(--line-strong);
+      font-size: 0.9rem;
+    }
+
+    .input:focus,
+    .select:focus,
+    .textarea:focus,
+    .people-toggle.active,
+    .people-toggle:hover {
+      border-color: #d5b8ff;
+      background: white;
+    }
+
+    .control-strip {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .dashboard {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 4px 7px;
+      min-height: 34px;
+      min-width: 64px;
+      display: grid;
+      grid-template-columns: 16px auto;
+      gap: 5px;
+      align-items: center;
+      background: white;
+    }
+
+    .stat i {
+      font-size: 0.88rem;
+      color: var(--purple);
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.55rem;
+      display: block;
+      line-height: 1.1;
+    }
+
+    .stat strong {
+      font-size: 0.86rem;
+      line-height: 1;
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .member-dropdown {
+      width: 148px;
+      min-width: 148px;
+      max-width: 148px;
+      height: 36px;
+      flex: 0 0 148px;
+      padding-left: 10px;
+      padding-right: 28px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .team-load { display: none; }
+
+    .person-tag {
+      border: 1px solid var(--member-border, var(--line));
+      background: var(--member-bg, white);
+      color: var(--muted);
+    }
+
+    .person-tag i { color: var(--member-icon, var(--purple)); }
+
+    .timeline {
+      padding: 14px;
+      min-height: 510px;
+      border-color: var(--line-strong);
+    }
+
+    .timeline-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 12px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .empty {
+      border: 1px dashed var(--line-strong);
+      background: var(--soft);
+      color: var(--muted);
+      border-radius: 9px;
+      padding: 28px;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .day {
+      display: grid;
+      gap: 9px;
+      padding: 13px 0 17px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .day:last-child { border-bottom: 0; }
+
+    .day-date {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      padding: 0 2px;
+    }
+
+    .day-date strong {
+      font-weight: 400;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.84rem;
+    }
+
+    .day-date small { color: var(--muted); font-size: 0.72rem; }
+    .day.overdue .day-date strong { color: var(--danger); }
+
+    .task-list { display: grid; gap: 8px; }
+
+    .task {
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: white;
+      padding: 11px;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .task:hover { border-color: var(--line-strong); background: #fffdfd; }
+    .task.done { opacity: 0.56; }
+    .task.done .task-title { text-decoration: line-through; color: var(--muted); }
+
+    .check { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--purple); cursor: pointer; }
+
+    .task-title {
+      font-size: 0.86rem;
+      line-height: 1.42;
+      color: var(--text);
+      overflow-wrap: anywhere;
+    }
+
+    .task-meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 8px;
+      color: var(--muted);
+    }
+
+    .tag {
+      border: 1px solid var(--line);
+      background: var(--soft);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 4px 7px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.68rem;
+    }
+
+    .tag.accent { background: var(--purple-soft); color: var(--purple); border-color: #eadcff; }
+    .tag.late { background: var(--danger-soft); color: var(--danger); border-color: #ffe0e0; }
+    .tag.repeat { background: var(--pink-soft); color: #9b3c72; border-color: #ffe0f1; }
+
+    .task-actions {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      min-width: 112px;
+    }
+
+    .subtask-panel {
+      grid-column: 2 / 4;
+      border: 1px solid var(--line);
+      background: var(--soft);
+      border-radius: 9px;
+      padding: 9px;
+      display: none;
+      gap: 8px;
+    }
+
+    .subtask-panel.open { display: grid; }
+
+    .subtask-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.77rem;
+    }
+
+    .subtask-row.done span { text-decoration: line-through; opacity: 0.6; }
+
+    .subtask-add {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 7px;
+    }
+
+    .people-select { position: relative; width: 100%; }
+
+    .people-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      color: var(--muted);
+      text-align: left;
+    }
+
+    .people-menu {
+      display: none;
+      position: absolute;
+      top: 46px;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 8px;
+      max-height: 230px;
+      overflow-y: auto;
+    }
+
+    .people-menu.open { display: grid; gap: 4px; }
+
+    .person-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px;
+      border-radius: 7px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .person-option:hover { background: var(--soft); color: var(--text); }
+    .person-option input { accent-color: var(--purple); }
+
+    .people-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: space-between;
+      border-top: 1px solid var(--line);
+      padding-top: 7px;
+      margin-top: 4px;
+    }
+
+    .mini-link {
+      border: 0;
+      background: transparent;
+      color: var(--purple);
+      cursor: pointer;
+      padding: 4px;
+      font-size: 0.72rem;
+    }
+
+    .quick-add { display: grid; gap: 10px; }
+
+    .side-late-list { display: grid; gap: 7px; }
+
+    .mini-late {
+      border: 1px solid var(--line);
+      background: var(--danger-soft);
+      border-radius: 8px;
+      padding: 9px;
+      color: #8f3c3c;
+      display: grid;
+      gap: 4px;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .mini-late small { color: #aa7474; }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(26, 20, 32, 0.28);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal {
+      width: min(100%, 780px);
+      max-height: 88vh;
+      overflow-y: auto;
+      background: white;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      padding: 16px;
+    }
+
+    .modal.small-modal { width: min(100%, 590px); }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+
+    .close-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--soft);
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .edit-form,
+    .settings-grid,
+    .settings-section { display: grid; gap: 12px; }
+
+    .edit-grid,
+    .config-add-grid,
+    .launch-settings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .modal-actions { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+
+    .settings-grid { grid-template-columns: 1fr; }
+
+    .config-list { display: grid; gap: 8px; }
+
+    .config-row {
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 10px;
+      background: var(--soft);
+      display: grid;
+      gap: 8px;
+    }
+
+    .category-edit-grid {
+      display: grid;
+      grid-template-columns: 28px 1.05fr 0.78fr 0.8fr 0.7fr 1.35fr auto;
+      gap: 7px;
+      align-items: start;
+    }
+
+    .member-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 0.75fr 0.75fr 0.75fr auto;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .move-buttons { display: flex; gap: 4px; }
+    .move-stack {
+      display: grid;
+      gap: 3px;
+      width: 24px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 2px;
+      background: white;
+    }
+
+    .move-stack .mini-move {
+      width: 18px;
+      height: 18px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.62rem;
+      border-radius: 4px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+    }
+
+    .move-stack .mini-move:hover { color: var(--purple); background: var(--purple-soft); }
+
+    #importFile { display: none; }
+
+    @media (max-width: 1180px) {
+      .topbar { grid-template-columns: 1fr auto; align-items: center; }
+      .brand-block { grid-column: 1; }
+      .top-metrics-area { grid-column: 1 / -1; justify-content: flex-start; }
+      .top-actions { grid-column: 2; }
+      .dashboard { justify-content: flex-start; flex-wrap: wrap; }
+      .main-grid { grid-template-columns: 250px minmax(0, 1fr); }
+      .rightbar { position: static; grid-column: 1 / -1; grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 860px) {
+      .app { padding: 18px 14px 36px; }
+      .topbar { grid-template-columns: 1fr; align-items: stretch; }
+      .brand-block { min-width: 0; }
+      .top-metrics-area { grid-column: auto; justify-content: flex-start; }
+      .top-actions { grid-column: auto; justify-content: flex-start; }
+      .main-grid { grid-template-columns: 1fr; }
+      .sidebar { position: static; opacity: 1; }
+      .rightbar { grid-template-columns: 1fr; opacity: 1; }
+      .control-strip { grid-template-columns: 1fr; }
+      .controls { justify-content: flex-start; }
+      .dashboard { flex-wrap: wrap; justify-content: flex-start; }
+      .filter-row .controls { width: max-content; }
+      .task { grid-template-columns: auto 1fr; }
+      .task-actions { grid-column: 2; justify-content: flex-start; min-width: 0; }
+      .subtask-panel { grid-column: 2; }
+      .category-edit-grid, .member-row, .edit-grid, .config-add-grid, .launch-settings-grid { grid-template-columns: 1fr; }
+      .move-stack { width: 100%; grid-template-columns: 1fr 1fr; }
+      .move-stack .mini-move { width: 100%; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand-block">
+        <h1>Avariiis</h1>
+        <p class="subtitle" id="topSubtitle">Launch planner</p>
+      </div>
+
+      <div class="top-metrics-area">
+        <section class="dashboard top-dashboard" aria-label="Task metrics">
+          <div class="stat"><i class="fa-solid fa-inbox"></i><div><span>Total</span><strong id="totalCount">0</strong></div></div>
+          <div class="stat"><i class="fa-solid fa-circle-check"></i><div><span>Done</span><strong id="doneCount">0</strong></div></div>
+          <div class="stat"><i class="fa-regular fa-square"></i><div><span>To do</span><strong id="todoCount">0</strong></div></div>
+          <div class="stat"><i class="fa-solid fa-clock"></i><div><span>Late</span><strong id="lateCount">0</strong></div></div>
+        </section>
+      </div>
+
+      <div class="top-actions">
+        <span class="pill" id="todayPill"><i class="fa-regular fa-calendar"></i> Today</span>
+        <span class="pill" id="dbStatus"><i class="fa-solid fa-rotate"></i> Local</span>
+        <div class="settings-wrap" id="settingsWrap">
+          <button class="btn light" id="settingsBtn" type="button"><i class="fa-solid fa-gear"></i> Settings</button>
+          <div class="settings-menu" id="settingsMenu">
+            <button class="btn light" id="openConfigBtn" type="button"><i class="fa-solid fa-sliders"></i> App settings</button>
+            <button class="btn light" id="exportBtn" type="button"><i class="fa-solid fa-file-export"></i> Export</button>
+            <button class="btn light" id="importBtn" type="button"><i class="fa-solid fa-file-import"></i> Import</button>
+            <button class="btn light" id="cleanDuplicatesBtn" type="button"><i class="fa-solid fa-broom"></i> Clean duplicates</button>
+            <button class="btn danger" id="resetAppBtn" type="button"><i class="fa-solid fa-trash"></i> Reset</button>
+          </div>
+        </div>
+        <input id="importFile" type="file" accept="application/json" />
+      </div>
+    </header>
+
+    <div class="main-grid">
+      <aside class="sidebar">
+        <section class="card">
+          <div class="side-head">
+            <h2>Launch plan</h2>
+            <button class="btn light small" id="clearCategoryBtn" type="button"><i class="fa-solid fa-layer-group"></i> All tasks</button>
+          </div>
+          <div class="launch-summary">
+            <small id="launchLabel">Deadline</small>
+            <span class="launch-name" id="launchNameText">Official launch</span>
+            <small id="launchDateText">July 15, 2026</small>
+            <small id="launchCountdown">Loading...</small>
+          </div>
+          <div class="plan-list" id="categorySideList"></div>
+        </section>
+      </aside>
+
+      <section class="workspace">
+        <section class="top-tools">
+          <div class="searchbox">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input id="searchInput" class="input" type="search" placeholder="Search tasks, subtasks, category, person..." />
+          </div>
+
+          <div class="filter-row" aria-label="Task filters">
+            <div class="controls inline-controls">
+              <button class="btn light" id="lateOnlyBtn" type="button"><i class="fa-solid fa-triangle-exclamation"></i> Late only</button>
+              <select id="memberFilter" class="select member-dropdown" aria-label="Filter by team member"></select>
+            </div>
+          </div>
+
+          <div class="team-load" id="teamLoad"></div>
+        </section>
+
+        <main class="timeline">
+          <div class="timeline-head">
+            <h2>Tasks</h2>
+            <span class="pill" id="activeFilterPill"><i class="fa-solid fa-filter"></i> All</span>
+          </div>
+          <div id="timeline"></div>
+        </main>
+      </section>
+
+      <aside class="rightbar">
+        <section class="card">
+          <div class="side-head"><h2>Create task</h2></div>
+          <form class="quick-add" id="taskForm">
+            <textarea id="taskLabel" class="textarea" placeholder="Task name" required></textarea>
+            <input id="taskDeadline" class="input" type="date" required />
+            <select id="taskCategory" class="select" required></select>
+            <div class="people-select" id="addPeopleSelect">
+              <button class="people-toggle" id="addPeopleToggle" type="button"><span id="addPeopleToggleText">Assignees</span><i class="fa-solid fa-chevron-down"></i></button>
+              <div class="people-menu" id="addPeopleMenu"></div>
+            </div>
+            <select id="taskRepeat" class="select">
+              <option value="none">No repeat</option>
+              <option value="daily">Daily task</option>
+              <option value="weekly">Weekly task</option>
+              <option value="monthly">Monthly task</option>
+            </select>
+            <button class="btn" type="submit"><i class="fa-solid fa-plus"></i> Add task</button>
+          </form>
+        </section>
+
+        <section class="card">
+          <div class="side-head"><h2>3 late tasks</h2></div>
+          <div class="side-late-list" id="rightLateTasks"></div>
+        </section>
+      </aside>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="editModal">
+    <div class="modal small-modal" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+      <div class="modal-head">
+        <h2 id="editTitle">Edit task</h2>
+        <button class="close-btn" id="closeEditBtn" type="button">×</button>
+      </div>
+      <form class="edit-form" id="editForm">
+        <input id="editTaskId" type="hidden" />
+        <textarea id="editLabel" class="textarea" placeholder="Task name" required></textarea>
+        <div class="edit-grid">
+          <input id="editDeadline" class="input" type="date" required />
+          <select id="editCategory" class="select" required></select>
+        </div>
+        <div class="people-select" id="editPeopleSelect">
+          <button class="people-toggle" id="editPeopleToggle" type="button"><span id="editPeopleToggleText">Assignees</span><i class="fa-solid fa-chevron-down"></i></button>
+          <div class="people-menu" id="editPeopleMenu"></div>
+        </div>
+        <select id="editRepeat" class="select">
+          <option value="none">No repeat</option>
+          <option value="daily">Daily task</option>
+          <option value="weekly">Weekly task</option>
+          <option value="monthly">Monthly task</option>
+        </select>
+        <div class="modal-actions">
+          <button class="btn light" id="cancelEditBtn" type="button">Cancel</button>
+          <button class="btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="configModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="configTitle">
+      <div class="modal-head">
+        <h2 id="configTitle">App settings</h2>
+        <button class="close-btn" id="closeConfigBtn" type="button">×</button>
+      </div>
+
+      <div class="settings-grid">
+        <section class="settings-section">
+          <h3>Deadline name and date</h3>
+          <div class="launch-settings-grid">
+            <input id="settingLaunchName" class="input" type="text" placeholder="Example: Official launch" />
+            <input id="settingLaunchDate" class="input" type="date" />
+          </div>
+          <div class="modal-actions"><button class="btn small" id="saveLaunchSettingsBtn" type="button"><i class="fa-solid fa-floppy-disk"></i> Save deadline</button></div>
+        </section>
+
+        <section class="settings-section">
+          <h3>Add category</h3>
+          <div class="config-add-grid">
+            <input id="newCategoryName" class="input" type="text" placeholder="Category name" />
+            <input id="newCategoryIcon" class="input" type="text" placeholder="Font Awesome icon: fa-globe" />
+          </div>
+          <textarea id="newCategoryGoal" class="textarea" placeholder="Goal for this category"></textarea>
+          <div class="edit-grid">
+            <input id="newCategoryDeadline" class="input" type="date" />
+            <input id="newCategoryTarget" class="input" type="number" min="0" placeholder="Number goal, optional" />
+          </div>
+          <div class="modal-actions"><button class="btn small" id="addCategoryBtn" type="button"><i class="fa-solid fa-plus"></i> Add category</button></div>
+          <div class="config-list" id="categoryConfigList"></div>
+        </section>
+
+        <section class="settings-section">
+          <h3>Add team member</h3>
+          <div class="config-add-grid">
+            <input id="newMemberName" class="input" type="text" placeholder="Member name" />
+            <input id="newMemberRole" class="input" type="text" placeholder="Role, optional" />
+            <input id="newMemberBadgeBg" class="input" type="text" placeholder="Badge background: #fff4fb" />
+            <input id="newMemberBadgeBorder" class="input" type="text" placeholder="Badge contour: #f7c8e0" />
+            <input id="newMemberIconColor" class="input" type="text" placeholder="Icon color: #db5aa8" />
+          </div>
+          <div class="modal-actions"><button class="btn small" id="addMemberBtn" type="button"><i class="fa-solid fa-user-plus"></i> Add member</button></div>
+          <div class="config-list" id="memberConfigList"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const TASK_STORAGE_KEY = "avariiis_tasks_v2_supabase";
+    const CATEGORY_STORAGE_KEY = "avariiis_categories_v2";
+    const MEMBER_STORAGE_KEY = "avariiis_members_v2";
+    const SETTINGS_STORAGE_KEY = "avariiis_settings_v2";
+
+    const SUPABASE_TABLE = "avariiis_tasks";
+    const SUPABASE_CATEGORY_TABLE = "avariiis_categories";
+    const SUPABASE_MEMBER_TABLE = "avariiis_team_members";
+    const SUPABASE_SETTINGS_TABLE = "avariiis_app_settings";
+
+    const SUPABASE_URL = "https://zbrjcvnrxbcsktpsfylo.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_DNsAH5hqiMDq-vOPm5FyaA_Nw4IThdc";
+    const SUPABASE_ENABLED = SUPABASE_URL.startsWith("https://") && SUPABASE_ANON_KEY.length > 40;
+    const db = SUPABASE_ENABLED ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+    const DEFAULT_SETTINGS = {
+      launchName: "Official launch",
+      launchDate: "2026-07-15"
+    };
+
+    const DEFAULT_CATEGORIES = [
+      { slug: "content", name: "Content", icon: "fa-video", sort_order: 1, deadline: "2026-07-12", goal_text: "30 pieces of content for Instagram, TikTok, Facebook and YouTube", goal_target: 30, goal_progress: 0 },
+      { slug: "prospection", name: "Prospection", icon: "fa-phone", sort_order: 2, deadline: "2026-07-13", goal_text: "100 prospects. Pitch 25 people every month.", goal_target: 100, goal_progress: 0 },
+      { slug: "website", name: "Website", icon: "fa-globe", sort_order: 3, deadline: "2026-07-10", goal_text: "3 case studies: Yuyu Cantine, Benin Restoo, Tanti Vlisco, Glim, SwordEnergy, femCoders", goal_target: 3, goal_progress: 0 },
+      { slug: "strategy", name: "Strategy", icon: "fa-bullseye", sort_order: 4, deadline: "2026-07-08", goal_text: "Have the full strategy document ready", goal_target: 1, goal_progress: 0 },
+      { slug: "formalities", name: "Formalities", icon: "fa-file-signature", sort_order: 5, deadline: "2026-07-11", goal_text: "Registration and business admin checklist ready", goal_target: 1, goal_progress: 0 },
+      { slug: "processes", name: "Processes", icon: "fa-diagram-project", sort_order: 6, deadline: "2026-07-14", goal_text: "Rules, roles, client process and delivery workflow ready", goal_target: 1, goal_progress: 0 },
+      { slug: "ads", name: "Ads", icon: "fa-rectangle-ad", sort_order: 7, deadline: "2026-07-14", goal_text: "First campaign plan, creatives, budget and target audience ready", goal_target: 1, goal_progress: 0 },
+      { slug: "launch", name: "Launch", icon: "fa-rocket", sort_order: 8, deadline: "2026-07-15", goal_text: "Everything ready for the launch day", goal_target: 1 }
+    ];
+
+    const DEFAULT_PEOPLE = [
+      { name: "Adéyoola", role: "Support / organisation / prospection", sort_order: 1, active: true, badge_bg: "#fff7ed", badge_border: "#fed7aa", icon_color: "#f59e0b" },
+      { name: "Olanike", role: "Direction / content / strategy", sort_order: 2, active: true, badge_bg: "#f5f3ff", badge_border: "#ddd6fe", icon_color: "#7c3aed" }
+    ];
+
+    let tasks = [];
+    let categories = [];
+    let people = [];
+    let appSettings = { ...DEFAULT_SETTINGS };
+    let activeCategory = "all";
+    let activeMember = "all";
+    let searchText = "";
+    let lateOnly = false;
+    let openGoalCategory = null;
+
+    const $ = id => document.getElementById(id);
+
+    const todayPill = $("todayPill");
+    const dbStatus = $("dbStatus");
+    const topSubtitle = $("topSubtitle");
+    const settingsWrap = $("settingsWrap");
+    const settingsBtn = $("settingsBtn");
+    const settingsMenu = $("settingsMenu");
+    const openConfigBtn = $("openConfigBtn");
+    const exportBtn = $("exportBtn");
+    const importBtn = $("importBtn");
+    const importFile = $("importFile");
+    const cleanDuplicatesBtn = $("cleanDuplicatesBtn");
+    const resetAppBtn = $("resetAppBtn");
+
+    const categorySideList = $("categorySideList");
+    const clearCategoryBtn = $("clearCategoryBtn");
+    const launchLabel = $("launchLabel");
+    const launchNameText = $("launchNameText");
+    const launchDateText = $("launchDateText");
+    const launchCountdown = $("launchCountdown");
+
+    const searchInput = $("searchInput");
+    const totalCount = $("totalCount");
+    const doneCount = $("doneCount");
+    const todoCount = $("todoCount");
+    const lateCount = $("lateCount");
+    const lateOnlyBtn = $("lateOnlyBtn");
+    const memberFilter = $("memberFilter");
+    const teamLoad = $("teamLoad");
+    const activeFilterPill = $("activeFilterPill");
+    const timeline = $("timeline");
+    const rightLateTasks = $("rightLateTasks");
+
+    const taskForm = $("taskForm");
+    const taskLabel = $("taskLabel");
+    const taskDeadline = $("taskDeadline");
+    const taskCategory = $("taskCategory");
+    const taskRepeat = $("taskRepeat");
+    const addPeopleSelect = $("addPeopleSelect");
+    const addPeopleToggle = $("addPeopleToggle");
+    const addPeopleToggleText = $("addPeopleToggleText");
+    const addPeopleMenu = $("addPeopleMenu");
+
+    const editModal = $("editModal");
+    const editForm = $("editForm");
+    const editTaskId = $("editTaskId");
+    const editLabel = $("editLabel");
+    const editDeadline = $("editDeadline");
+    const editCategory = $("editCategory");
+    const editRepeat = $("editRepeat");
+    const editPeopleSelect = $("editPeopleSelect");
+    const editPeopleToggle = $("editPeopleToggle");
+    const editPeopleToggleText = $("editPeopleToggleText");
+    const editPeopleMenu = $("editPeopleMenu");
+    const closeEditBtn = $("closeEditBtn");
+    const cancelEditBtn = $("cancelEditBtn");
+
+    const configModal = $("configModal");
+    const closeConfigBtn = $("closeConfigBtn");
+    const settingLaunchName = $("settingLaunchName");
+    const settingLaunchDate = $("settingLaunchDate");
+    const saveLaunchSettingsBtn = $("saveLaunchSettingsBtn");
+    const newCategoryName = $("newCategoryName");
+    const newCategoryIcon = $("newCategoryIcon");
+    const newCategoryGoal = $("newCategoryGoal");
+    const newCategoryDeadline = $("newCategoryDeadline");
+    const newCategoryTarget = $("newCategoryTarget");
+    const addCategoryBtn = $("addCategoryBtn");
+    const categoryConfigList = $("categoryConfigList");
+    const newMemberName = $("newMemberName");
+    const newMemberRole = $("newMemberRole");
+    const newMemberBadgeBg = $("newMemberBadgeBg");
+    const newMemberBadgeBorder = $("newMemberBadgeBorder");
+    const newMemberIconColor = $("newMemberIconColor");
+    const addMemberBtn = $("addMemberBtn");
+    const memberConfigList = $("memberConfigList");
+
+    todayPill.innerHTML = `<i class="fa-regular fa-calendar"></i> ${formatDateShort(todayISO())}`;
+    taskDeadline.value = todayISO();
+
+    boot();
+
+    async function boot() {
+      tasks = loadLocal(TASK_STORAGE_KEY, []);
+      categories = loadLocal(CATEGORY_STORAGE_KEY, DEFAULT_CATEGORIES).map(normalizeCategory).sort(bySortOrder);
+      people = loadLocal(MEMBER_STORAGE_KEY, DEFAULT_PEOPLE).map(normalizePerson).sort(bySortOrder);
+      appSettings = { ...DEFAULT_SETTINGS, ...loadLocal(SETTINGS_STORAGE_KEY, DEFAULT_SETTINGS) };
+
+      bindEvents();
+      rebuildAllInputs();
+      render();
+      setSyncStatus("Local");
+
+      if (SUPABASE_ENABLED) {
+        setSyncStatus("Syncing");
+        await Promise.all([loadSettingsFromDb(), loadCategoriesFromDb(), loadMembersFromDb(), loadTasksFromDb()]);
+        rebuildAllInputs();
+        render();
+      }
+    }
+
+    function bindEvents() {
+      settingsBtn.addEventListener("click", event => { event.stopPropagation(); settingsMenu.classList.toggle("open"); });
+      document.addEventListener("click", event => {
+        if (!settingsWrap.contains(event.target)) settingsMenu.classList.remove("open");
+        closePeopleDropdownIfOutside(event, addPeopleSelect, addPeopleToggle, addPeopleMenu);
+        closePeopleDropdownIfOutside(event, editPeopleSelect, editPeopleToggle, editPeopleMenu);
+      });
+      settingsMenu.addEventListener("click", event => { if (event.target.closest("button")) settingsMenu.classList.remove("open"); });
+
+      openConfigBtn.addEventListener("click", openConfigModal);
+      closeConfigBtn.addEventListener("click", closeConfigModal);
+      configModal.addEventListener("click", event => { if (event.target === configModal) closeConfigModal(); });
+      saveLaunchSettingsBtn.addEventListener("click", saveLaunchSettings);
+      addCategoryBtn.addEventListener("click", addCategory);
+      addMemberBtn.addEventListener("click", addMember);
+
+      exportBtn.addEventListener("click", exportTasks);
+      importBtn.addEventListener("click", () => importFile.click());
+      importFile.addEventListener("change", importTasks);
+      cleanDuplicatesBtn.addEventListener("click", cleanDuplicateTasks);
+      resetAppBtn.addEventListener("click", resetApp);
+
+      searchInput.addEventListener("input", event => { searchText = event.target.value.toLowerCase().trim(); render(); });
+      lateOnlyBtn.addEventListener("click", () => { lateOnly = !lateOnly; lateOnlyBtn.classList.toggle("soft", lateOnly); render(); });
+      memberFilter.addEventListener("change", event => { activeMember = event.target.value; render(); });
+      clearCategoryBtn.addEventListener("click", () => { activeCategory = "all"; render(); });
+
+      taskForm.addEventListener("submit", addTask);
+      editForm.addEventListener("submit", saveEditedTask);
+      closeEditBtn.addEventListener("click", closeEditModal);
+      cancelEditBtn.addEventListener("click", closeEditModal);
+      editModal.addEventListener("click", event => { if (event.target === editModal) closeEditModal(); });
+      document.addEventListener("keydown", event => { if (event.key === "Escape") { closeEditModal(); closeConfigModal(); } });
+
+      setupPeopleDropdown(addPeopleSelect, addPeopleToggle, addPeopleMenu);
+      setupPeopleDropdown(editPeopleSelect, editPeopleToggle, editPeopleMenu);
+    }
+
+    function rebuildAllInputs() {
+      categories.sort(bySortOrder);
+      people.sort(bySortOrder);
+      buildCategoryOptions(taskCategory);
+      buildCategoryOptions(editCategory);
+      buildMemberFilter();
+      buildPeopleMenu(addPeopleMenu, addPeopleToggleText);
+      buildPeopleMenu(editPeopleMenu, editPeopleToggleText);
+      updateLaunchLabels();
+    }
+
+    function loadLocal(key, fallback) {
+      try {
+        const saved = localStorage.getItem(key);
+        if (!saved) return JSON.parse(JSON.stringify(fallback));
+        const parsed = JSON.parse(saved);
+        return parsed ?? JSON.parse(JSON.stringify(fallback));
+      } catch {
+        return JSON.parse(JSON.stringify(fallback));
+      }
+    }
+
+    function saveLocal() {
+      localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(tasks));
+      localStorage.setItem(CATEGORY_STORAGE_KEY, JSON.stringify(categories));
+      localStorage.setItem(MEMBER_STORAGE_KEY, JSON.stringify(people));
+      localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(appSettings));
+    }
+
+    function setSyncStatus(message) {
+      dbStatus.innerHTML = `<i class="fa-solid fa-rotate"></i> ${escapeHTML(message)}`;
+    }
+
+    async function loadTasksFromDb() {
+      try {
+        const { data, error } = await db.from(SUPABASE_TABLE).select("*").order("deadline", { ascending: true }).order("created_at", { ascending: true });
+        if (error) throw error;
+        tasks = (data || []).map(fromDbTask);
+        saveLocal();
+        setSyncStatus("Sync");
+      } catch (error) {
+        console.error(error);
+        setSyncStatus("Sync issue");
+      }
+    }
+
+    async function loadCategoriesFromDb() {
+      try {
+        const { data, error } = await db.from(SUPABASE_CATEGORY_TABLE).select("*").order("sort_order", { ascending: true });
+        if (error) throw error;
+        if (data && data.length) categories = data.map(normalizeCategory).sort(bySortOrder);
+        saveLocal();
+      } catch (error) { console.warn(error); }
+    }
+
+    async function loadMembersFromDb() {
+      try {
+        const { data, error } = await db.from(SUPABASE_MEMBER_TABLE).select("*").eq("active", true).order("sort_order", { ascending: true });
+        if (error) throw error;
+        if (data && data.length) people = data.map(normalizePerson).sort(bySortOrder);
+        saveLocal();
+      } catch (error) { console.warn(error); }
+    }
+
+    async function loadSettingsFromDb() {
+      try {
+        const { data, error } = await db.from(SUPABASE_SETTINGS_TABLE).select("value").eq("key", "main").maybeSingle();
+        if (error) throw error;
+        if (data && data.value) {
+          appSettings = { ...DEFAULT_SETTINGS, ...data.value };
+          saveLocal();
+        }
+      } catch (error) { console.warn(error); }
+    }
+
+    function toDbTask(task) {
+      return {
+        id: task.id,
+        label: task.label,
+        deadline: task.deadline,
+        category: task.category,
+        assignees: Array.isArray(task.assignees) ? task.assignees : [],
+        done: Boolean(task.done),
+        repeat_type: task.repeatType || "none",
+        repeat_interval: task.repeatInterval || 1,
+        subtasks: Array.isArray(task.subtasks) ? task.subtasks : [],
+        parent_id: task.parentId || null
+      };
+    }
+
+    function fromDbTask(row) {
+      return normalizeTask({
+        id: row.id,
+        label: row.label,
+        deadline: row.deadline,
+        category: row.category,
+        assignees: row.assignees || [],
+        done: row.done,
+        repeatType: row.repeat_type || row.repeatType || "none",
+        repeatInterval: row.repeat_interval || row.repeatInterval || 1,
+        subtasks: Array.isArray(row.subtasks) ? row.subtasks : [],
+        parentId: row.parent_id || row.parentId || null,
+        createdAt: row.created_at || row.createdAt || Date.now()
+      });
+    }
+
+    function normalizeTask(task) {
+      const validPeople = people.map(person => person.name);
+      return {
+        id: task.id || makeId(),
+        label: String(task.label || "").trim(),
+        deadline: String(task.deadline || todayISO()),
+        category: categories.some(category => category.slug === task.category) ? task.category : (categories[0]?.slug || "content"),
+        assignees: Array.isArray(task.assignees) ? task.assignees.filter(name => validPeople.includes(name)) : [],
+        done: Boolean(task.done),
+        repeatType: ["none", "daily", "weekly", "monthly"].includes(task.repeatType) ? task.repeatType : "none",
+        repeatInterval: Number(task.repeatInterval || 1),
+        subtasks: Array.isArray(task.subtasks) ? task.subtasks.map(normalizeSubtask) : [],
+        parentId: task.parentId || null,
+        createdAt: task.createdAt || Date.now()
+      };
+    }
+
+    function normalizeSubtask(subtask) {
+      return { id: subtask.id || makeId(), label: String(subtask.label || "").trim(), done: Boolean(subtask.done) };
+    }
+
+    function normalizeCategory(category, index = 0) {
+      return {
+        slug: safeSlug(category.slug || category.name || "category"),
+        name: String(category.name || "Category"),
+        icon: cleanIcon(category.icon || "fa-circle"),
+        sort_order: Number(category.sort_order ?? category.sortOrder ?? index + 1),
+        deadline: category.deadline || appSettings.launchDate || DEFAULT_SETTINGS.launchDate,
+        goal_text: String(category.goal_text ?? category.goalText ?? ""),
+        goal_target: Math.max(0, Number(category.goal_target ?? category.goalTarget ?? 0)),
+        goal_progress: Math.max(0, Number(category.goal_progress ?? category.goalProgress ?? 0))
+      };
+    }
+
+    function normalizePerson(person, index = 0) {
+      return {
+        name: String(person.name || "").trim(),
+        role: String(person.role || ""),
+        sort_order: Number(person.sort_order ?? person.sortOrder ?? index + 1),
+        active: person.active !== false,
+        badge_bg: String(person.badge_bg ?? person.badgeBg ?? "#f8fafc"),
+        badge_border: String(person.badge_border ?? person.badgeBorder ?? "#e2e8f0"),
+        icon_color: String(person.icon_color ?? person.iconColor ?? "#64748b")
+      };
+    }
+
+    function bySortOrder(a, b) { return Number(a.sort_order || 0) - Number(b.sort_order || 0); }
+
+    function buildCategoryOptions(select) {
+      select.innerHTML = categories.map(category => `<option value="${escapeHTML(category.slug)}">${escapeHTML(category.name)}</option>`).join("");
+    }
+
+    function buildMemberFilter() {
+      const current = activeMember;
+      const totalOpen = tasks.filter(task => !task.done).length;
+      const unassigned = tasks.filter(task => !task.done && (!task.assignees || task.assignees.length === 0)).length;
+      memberFilter.innerHTML = `
+        <option value="all">All members</option>
+        <option value="unassigned">Unassigned · ${unassigned}</option>
+        ${people.map(person => {
+          const assigned = tasks.filter(task => !task.done && task.assignees.includes(person.name)).length;
+          const late = tasks.filter(task => isLate(task) && task.assignees.includes(person.name)).length;
+          const lateText = late ? `, ${late} late` : "";
+          return `<option value="${escapeHTML(person.name)}">${escapeHTML(person.name)} · ${assigned} task${assigned === 1 ? "" : "s"}${lateText}</option>`;
+        }).join("")}
+      `;
+      memberFilter.value = [...people.map(p => p.name), "all", "unassigned"].includes(current) ? current : "all";
+      activeMember = memberFilter.value;
+    }
+
+    function buildPeopleMenu(menu, textElement) {
+      menu.innerHTML = people.map(person => `
+        <label class="person-option">
+          <input type="checkbox" value="${escapeHTML(person.name)}" />
+          <span>${escapeHTML(person.name)}</span>
+        </label>
+      `).join("") + `
+        <div class="people-actions">
+          <button class="mini-link select-all" type="button">All</button>
+          <button class="mini-link clear-all" type="button">Clear</button>
+        </div>
+      `;
+      menu.querySelectorAll("input[type='checkbox']").forEach(input => input.addEventListener("change", () => updatePeopleToggleText(menu, textElement)));
+      menu.querySelector(".select-all").addEventListener("click", () => { menu.querySelectorAll("input[type='checkbox']").forEach(input => input.checked = true); updatePeopleToggleText(menu, textElement); });
+      menu.querySelector(".clear-all").addEventListener("click", () => clearSelectedPeople(menu, textElement));
+    }
+
+    function setupPeopleDropdown(select, toggle, menu) {
+      toggle.addEventListener("click", event => {
+        event.stopPropagation();
+        menu.classList.toggle("open");
+        toggle.classList.toggle("active", menu.classList.contains("open"));
+      });
+      menu.addEventListener("click", event => event.stopPropagation());
+    }
+
+    function closePeopleDropdownIfOutside(event, select, toggle, menu) {
+      if (!select.contains(event.target)) { menu.classList.remove("open"); toggle.classList.remove("active"); }
+    }
+
+    function getSelectedPeople(menu) {
+      return Array.from(menu.querySelectorAll("input[type='checkbox']:checked")).map(input => input.value);
+    }
+
+    function setSelectedPeople(menu, textElement, selectedPeople) {
+      const selected = new Set(selectedPeople || []);
+      menu.querySelectorAll("input[type='checkbox']").forEach(input => input.checked = selected.has(input.value));
+      updatePeopleToggleText(menu, textElement);
+    }
+
+    function clearSelectedPeople(menu, textElement) {
+      menu.querySelectorAll("input[type='checkbox']").forEach(input => input.checked = false);
+      updatePeopleToggleText(menu, textElement);
+    }
+
+    function updatePeopleToggleText(menu, textElement) {
+      const selected = getSelectedPeople(menu);
+      textElement.textContent = selected.length === 0 ? "Assignees" : selected.length === 1 ? selected[0] : `${selected.length} assignees`;
+    }
+
+    async function addTask(event) {
+      event.preventDefault();
+      const label = taskLabel.value.trim();
+      if (!label) return;
+      let newTask = normalizeTask({
+        id: makeId(),
+        label,
+        deadline: taskDeadline.value || todayISO(),
+        category: taskCategory.value,
+        assignees: getSelectedPeople(addPeopleMenu),
+        repeatType: taskRepeat.value,
+        done: false,
+        subtasks: [],
+        createdAt: Date.now()
+      });
+      newTask = await insertTask(newTask);
+      tasks.push(newTask);
+      taskLabel.value = "";
+      taskDeadline.value = todayISO();
+      taskRepeat.value = "none";
+      clearSelectedPeople(addPeopleMenu, addPeopleToggleText);
+      saveLocal();
+      render();
+    }
+
+    async function insertTask(task) {
+      if (!SUPABASE_ENABLED) return task;
+      try {
+        const { data, error } = await db.from(SUPABASE_TABLE).insert(toDbTask(task)).select().single();
+        if (error) throw error;
+        setSyncStatus("Sync");
+        return fromDbTask(data);
+      } catch (error) {
+        console.error(error);
+        setSyncStatus("Sync issue");
+        return task;
+      }
+    }
+
+    async function updateTaskInDb(task) {
+      if (!SUPABASE_ENABLED) return true;
+      try {
+        const { error } = await db.from(SUPABASE_TABLE).update(toDbTask(task)).eq("id", task.id);
+        if (error) throw error;
+        setSyncStatus("Sync");
+        return true;
+      } catch (error) {
+        console.error(error);
+        setSyncStatus("Sync issue");
+        alert("Sync issue. Your local change is still saved in this browser.");
+        return false;
+      }
+    }
+
+    async function deleteTaskInDb(id) {
+      if (!SUPABASE_ENABLED) return true;
+      try {
+        const { error } = await db.from(SUPABASE_TABLE).delete().eq("id", id);
+        if (error) throw error;
+        setSyncStatus("Sync");
+        return true;
+      } catch (error) {
+        console.error(error);
+        setSyncStatus("Sync issue");
+        return false;
+      }
+    }
+
+    function openEditModal(id) {
+      const task = tasks.find(item => item.id === id);
+      if (!task) return;
+      editTaskId.value = task.id;
+      editLabel.value = task.label;
+      editDeadline.value = task.deadline;
+      editCategory.value = task.category;
+      editRepeat.value = task.repeatType || "none";
+      setSelectedPeople(editPeopleMenu, editPeopleToggleText, task.assignees);
+      editModal.classList.add("open");
+      setTimeout(() => editLabel.focus(), 0);
+    }
+
+    function closeEditModal() {
+      editModal.classList.remove("open");
+      editForm.reset();
+      clearSelectedPeople(editPeopleMenu, editPeopleToggleText);
+    }
+
+    async function saveEditedTask(event) {
+      event.preventDefault();
+      const id = editTaskId.value;
+      const oldTask = tasks.find(task => task.id === id);
+      if (!oldTask) return;
+      const updatedTask = normalizeTask({ ...oldTask, label: editLabel.value.trim(), deadline: editDeadline.value, category: editCategory.value, assignees: getSelectedPeople(editPeopleMenu), repeatType: editRepeat.value });
+      tasks = tasks.map(task => task.id === id ? updatedTask : task);
+      saveLocal();
+      render();
+      closeEditModal();
+      await updateTaskInDb(updatedTask);
+    }
+
+    async function toggleTask(id) {
+      const task = tasks.find(item => item.id === id);
+      if (!task) return;
+      const wasDone = task.done;
+      const updated = { ...task, done: !task.done };
+      tasks = tasks.map(item => item.id === id ? updated : item);
+      saveLocal();
+      render();
+      await updateTaskInDb(updated);
+      if (!wasDone && updated.done && updated.repeatType && updated.repeatType !== "none") {
+        await createNextRepeat(updated);
+      }
+    }
+
+    async function createNextRepeat(task) {
+      const nextDate = nextRepeatDate(task.deadline, task.repeatType, task.repeatInterval || 1);
+      const seriesId = task.parentId || task.id;
+      const alreadyExists = tasks.some(item => (item.parentId === seriesId || item.id === seriesId) && item.deadline === nextDate && item.label === task.label && !item.done);
+      if (alreadyExists) return;
+      let nextTask = normalizeTask({ ...task, id: makeId(), deadline: nextDate, done: false, parentId: seriesId, subtasks: task.subtasks.map(sub => ({ ...sub, id: makeId(), done: false })), createdAt: Date.now() });
+      nextTask = await insertTask(nextTask);
+      tasks.push(nextTask);
+      saveLocal();
+      render();
+    }
+
+    async function duplicateTask(id) {
+      const task = tasks.find(item => item.id === id);
+      if (!task) return;
+      let copy = normalizeTask({ ...task, id: makeId(), label: `${task.label} copy`, done: false, subtasks: task.subtasks.map(sub => ({ ...sub, id: makeId() })), createdAt: Date.now() });
+      copy = await insertTask(copy);
+      tasks.push(copy);
+      saveLocal();
+      render();
+    }
+
+    async function removeTask(id) {
+      if (!confirm("Delete this task?")) return;
+      tasks = tasks.filter(task => task.id !== id);
+      saveLocal();
+      render();
+      await deleteTaskInDb(id);
+    }
+
+    async function addSubtask(taskId, input) {
+      const label = input.value.trim();
+      if (!label) return;
+      const task = tasks.find(item => item.id === taskId);
+      if (!task) return;
+      const updated = { ...task, subtasks: [...task.subtasks, { id: makeId(), label, done: false }] };
+      tasks = tasks.map(item => item.id === taskId ? updated : item);
+      input.value = "";
+      saveLocal();
+      render();
+      openSubtasks(taskId);
+      await updateTaskInDb(updated);
+    }
+
+    async function toggleSubtask(taskId, subtaskId) {
+      const task = tasks.find(item => item.id === taskId);
+      if (!task) return;
+      const updated = { ...task, subtasks: task.subtasks.map(sub => sub.id === subtaskId ? { ...sub, done: !sub.done } : sub) };
+      tasks = tasks.map(item => item.id === taskId ? updated : item);
+      saveLocal();
+      render();
+      openSubtasks(taskId);
+      await updateTaskInDb(updated);
+    }
+
+    async function deleteSubtask(taskId, subtaskId) {
+      const task = tasks.find(item => item.id === taskId);
+      if (!task) return;
+      const updated = { ...task, subtasks: task.subtasks.filter(sub => sub.id !== subtaskId) };
+      tasks = tasks.map(item => item.id === taskId ? updated : item);
+      saveLocal();
+      render();
+      openSubtasks(taskId);
+      await updateTaskInDb(updated);
+    }
+
+    function openSubtasks(taskId) {
+      const panel = document.querySelector(`[data-subtask-panel="${CSS.escape(taskId)}"]`);
+      if (panel) panel.classList.add("open");
+    }
+
+    function getFilteredTasks() {
+      return tasks
+        .map(normalizeTask)
+        .filter(task => {
+          const category = getCategory(task.category);
+          const assigneesText = (task.assignees || []).join(" ");
+          const subtasksText = (task.subtasks || []).map(sub => sub.label).join(" ");
+          const matchCategory = activeCategory === "all" || task.category === activeCategory;
+          const matchMember = activeMember === "all" || (activeMember === "unassigned" && task.assignees.length === 0) || task.assignees.includes(activeMember);
+          const haystack = `${task.label} ${subtasksText} ${task.deadline} ${category.name} ${assigneesText}`.toLowerCase();
+          const matchSearch = !searchText || haystack.includes(searchText);
+          const matchLate = !lateOnly || isLate(task);
+          return matchCategory && matchMember && matchSearch && matchLate;
+        })
+        .sort(sortTasks);
+    }
+
+    function sortTasks(a, b) {
+      const lateA = isLate(a), lateB = isLate(b);
+      if (lateA !== lateB) return Number(lateB) - Number(lateA);
+      if (Number(a.done) !== Number(b.done)) return Number(a.done) - Number(b.done);
+      return parseISODate(a.deadline) - parseISODate(b.deadline);
+    }
+
+    function render() {
+      buildMemberFilter();
+      renderHeader();
+      renderSidebar();
+      renderStats();
+      renderTasks();
+      renderRightLateTasks();
+    }
+
+    function renderHeader() {
+      updateLaunchLabels();
+      const category = activeCategory === "all" ? null : getCategory(activeCategory);
+      activeFilterPill.innerHTML = `<i class="fa-solid fa-filter"></i> ${escapeHTML(category ? category.name : "All")}`;
+      clearCategoryBtn.classList.toggle("active", activeCategory === "all");
+    }
+
+    function updateLaunchLabels() {
+      topSubtitle.textContent = `${appSettings.launchName} · ${formatDateLong(appSettings.launchDate)}`;
+      launchLabel.textContent = "Deadline";
+      launchNameText.textContent = appSettings.launchName;
+      launchDateText.textContent = formatDateLong(appSettings.launchDate);
+      const diff = Math.round((parseISODate(appSettings.launchDate) - stripTime(new Date())) / 86400000);
+      launchCountdown.textContent = diff > 1 ? `${diff} days left` : diff === 1 ? "Tomorrow" : diff === 0 ? "Today" : `${Math.abs(diff)} days after deadline`;
+    }
+
+    function renderSidebar() {
+      const counts = categoryCounts();
+      categorySideList.innerHTML = categories.map(category => {
+        const count = counts[category.slug] || 0;
+        const target = Number(category.goal_target || 0);
+        const progress = Math.min(Number(category.goal_progress || 0), target || Number(category.goal_progress || 0));
+        const done = target > 0 && progress >= target;
+        const isOpen = openGoalCategory === category.slug;
+        return `
+          <div class="plan-item ${activeCategory === category.slug ? "active" : ""}" data-category-card="${escapeHTML(category.slug)}">
+            <button class="plan-filter" type="button" data-category-filter="${escapeHTML(category.slug)}">
+              <span class="plan-icon"><i class="fa-solid ${escapeHTML(category.icon)}"></i></span>
+              <span class="plan-main">
+                <span class="plan-title">${escapeHTML(category.name)}</span>
+                <span class="plan-date">${escapeHTML(formatDateShort(category.deadline || appSettings.launchDate))}</span>
+              </span>
+              <span class="plan-count" title="Tasks in this category">${count} tasks</span>
+            </button>
+            <div class="plan-actions">
+              <span class="goal-status">Goal: ${escapeHTML(String(progress))}${target ? `/${escapeHTML(String(target))}` : ""}${done ? " · reached" : ""}</span>
+              <button class="tiny-btn" type="button" data-category-view="${escapeHTML(category.slug)}">${isOpen ? "Hide" : "View"}</button>
+            </div>
+            <div class="goal-panel ${isOpen ? "open" : ""}">
+              <div class="goal-description">${escapeHTML(category.goal_text || "No description yet. Add one in Settings.")}</div>
+              <div class="goal-progress-row">
+                <button class="tiny-btn" type="button" data-category-progress-minus="${escapeHTML(category.slug)}">−</button>
+                <input class="input goal-number" type="number" min="0" value="${escapeHTML(String(progress))}" data-category-progress-input="${escapeHTML(category.slug)}" />
+                <button class="tiny-btn" type="button" data-category-progress-plus="${escapeHTML(category.slug)}">+</button>
+                <span class="goal-status">${done ? "Milestone reached" : target ? `${Math.max(target - progress, 0)} left` : "Set a target in Settings"}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+      categorySideList.querySelectorAll("[data-category-filter]").forEach(button => button.addEventListener("click", () => { activeCategory = button.dataset.categoryFilter; render(); }));
+      categorySideList.querySelectorAll("[data-category-view]").forEach(button => button.addEventListener("click", event => {
+        event.stopPropagation();
+        openGoalCategory = openGoalCategory === button.dataset.categoryView ? null : button.dataset.categoryView;
+        render();
+      }));
+      categorySideList.querySelectorAll("[data-category-progress-minus]").forEach(button => button.addEventListener("click", () => changeCategoryProgress(button.dataset.categoryProgressMinus, -1)));
+      categorySideList.querySelectorAll("[data-category-progress-plus]").forEach(button => button.addEventListener("click", () => changeCategoryProgress(button.dataset.categoryProgressPlus, 1)));
+      categorySideList.querySelectorAll("[data-category-progress-input]").forEach(input => input.addEventListener("change", () => setCategoryProgress(input.dataset.categoryProgressInput, Number(input.value || 0))));
+    }
+
+    function categoryCounts() {
+      return tasks.reduce((acc, task) => { acc[task.category] = (acc[task.category] || 0) + 1; return acc; }, {});
+    }
+
+    function renderStats() {
+      const total = tasks.length;
+      const done = tasks.filter(task => task.done).length;
+      const late = tasks.filter(isLate).length;
+      totalCount.textContent = total;
+      doneCount.textContent = done;
+      todoCount.textContent = total - done;
+      lateCount.textContent = late;
+    }
+
+    function renderTeamLoad() {
+      teamLoad.innerHTML = "";
+    }
+
+    function renderTasks() {
+      const filtered = getFilteredTasks();
+      timeline.innerHTML = "";
+      if (!filtered.length) {
+        timeline.innerHTML = `<div class="empty">No tasks found.<br>Add a task from the right sidebar.</div>`;
+        return;
+      }
+      const lateTasks = filtered.filter(isLate);
+      const normalTasks = filtered.filter(task => !isLate(task));
+      if (lateTasks.length) renderTaskGroup("Late tasks", `${lateTasks.length} task${lateTasks.length > 1 ? "s" : ""}`, "fa-triangle-exclamation", lateTasks, true);
+      if (!lateOnly) {
+        const groups = groupTasks(normalTasks);
+        Object.keys(groups).sort((a, b) => parseISODate(a) - parseISODate(b)).forEach(date => {
+          renderTaskGroup(formatDateLong(date), `${relativeDate(date)} · ${groups[date].length} task${groups[date].length > 1 ? "s" : ""}`, "fa-calendar-day", groups[date], false);
+        });
+      }
+    }
+
+    function renderTaskGroup(title, subtitle, icon, groupTasks, overdue) {
+      const group = document.createElement("section");
+      group.className = "day" + (overdue ? " overdue" : "");
+      group.innerHTML = `
+        <div class="day-date">
+          <strong><i class="fa-solid ${escapeHTML(icon)}"></i>${escapeHTML(title)}</strong>
+          <small>${escapeHTML(subtitle)}</small>
+        </div>
+        <div class="task-list"></div>
+      `;
+      const list = group.querySelector(".task-list");
+      groupTasks.sort(sortTasks).forEach(task => list.appendChild(createTaskElement(task)));
+      timeline.appendChild(group);
+    }
+
+    function createTaskElement(task) {
+      const category = getCategory(task.category);
+      const item = document.createElement("article");
+      item.className = "task" + (task.done ? " done" : "");
+      const completedSubtasks = task.subtasks.filter(sub => sub.done).length;
+      const subtaskLabel = `${completedSubtasks}/${task.subtasks.length}`;
+      const assigneeTags = task.assignees.length ? task.assignees.map(name => {
+        const person = getPerson(name);
+        return `<span class="tag person-tag" style="--member-bg:${escapeHTML(person.badge_bg)}; --member-border:${escapeHTML(person.badge_border)}; --member-icon:${escapeHTML(person.icon_color)}"><i class="fa-solid fa-user"></i>${escapeHTML(name)}</span>`;
+      }).join("") : `<span class="tag"><i class="fa-regular fa-user"></i>Unassigned</span>`;
+      const repeatTag = task.repeatType && task.repeatType !== "none" ? `<span class="tag repeat"><i class="fa-solid fa-repeat"></i>${escapeHTML(task.repeatType)}</span>` : "";
+      const lateTag = isLate(task) ? `<span class="tag late"><i class="fa-solid fa-clock"></i>${escapeHTML(relativeDate(task.deadline))}</span>` : "";
+
+      item.innerHTML = `
+        <input class="check" type="checkbox" ${task.done ? "checked" : ""} aria-label="Mark done" />
+        <div>
+          <div class="task-title">${escapeHTML(task.label)}</div>
+          <div class="task-meta">
+            <span class="tag accent"><i class="fa-solid ${escapeHTML(category.icon)}"></i>${escapeHTML(category.name)}</span>
+            <span class="tag"><i class="fa-regular fa-calendar"></i>${escapeHTML(formatDateShort(task.deadline))}</span>
+            ${repeatTag}
+            ${lateTag}
+            ${assigneeTags}
+          </div>
+        </div>
+        <div class="task-actions">
+          <button class="icon-btn subtask-toggle" type="button" title="Subtasks"><i class="fa-solid fa-list-check"></i></button>
+          <button class="icon-btn duplicate" type="button" title="Duplicate"><i class="fa-regular fa-copy"></i></button>
+          <button class="icon-btn edit" type="button" title="Edit"><i class="fa-solid fa-pen"></i></button>
+          <button class="icon-btn delete" type="button" title="Delete"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div class="subtask-panel" data-subtask-panel="${escapeHTML(task.id)}">
+          <div class="task-meta"><span class="tag"><i class="fa-solid fa-list-check"></i>Subtasks ${escapeHTML(subtaskLabel)}</span></div>
+          <div class="subtask-list">
+            ${task.subtasks.length ? task.subtasks.map(sub => `
+              <div class="subtask-row ${sub.done ? "done" : ""}">
+                <input type="checkbox" ${sub.done ? "checked" : ""} data-toggle-subtask="${escapeHTML(sub.id)}" />
+                <span>${escapeHTML(sub.label)}</span>
+                <button class="icon-btn" type="button" data-delete-subtask="${escapeHTML(sub.id)}" title="Delete subtask"><i class="fa-solid fa-xmark"></i></button>
+              </div>
+            `).join("") : `<div class="subtask-row"><span></span><span>No subtasks yet.</span><span></span></div>`}
+          </div>
+          <div class="subtask-add">
+            <input class="input" type="text" placeholder="Add subtask" data-subtask-input="${escapeHTML(task.id)}" />
+            <button class="btn small" type="button" data-add-subtask="${escapeHTML(task.id)}"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      `;
+
+      item.querySelector(".check").addEventListener("change", () => toggleTask(task.id));
+      item.querySelector(".subtask-toggle").addEventListener("click", () => item.querySelector(".subtask-panel").classList.toggle("open"));
+      item.querySelector(".duplicate").addEventListener("click", () => duplicateTask(task.id));
+      item.querySelector(".edit").addEventListener("click", () => openEditModal(task.id));
+      item.querySelector(".delete").addEventListener("click", () => removeTask(task.id));
+      item.querySelectorAll("[data-toggle-subtask]").forEach(input => input.addEventListener("change", () => toggleSubtask(task.id, input.dataset.toggleSubtask)));
+      item.querySelectorAll("[data-delete-subtask]").forEach(button => button.addEventListener("click", () => deleteSubtask(task.id, button.dataset.deleteSubtask)));
+      const addBtn = item.querySelector("[data-add-subtask]");
+      const input = item.querySelector("[data-subtask-input]");
+      addBtn.addEventListener("click", () => addSubtask(task.id, input));
+      input.addEventListener("keydown", event => { if (event.key === "Enter") { event.preventDefault(); addSubtask(task.id, input); } });
+      return item;
+    }
+
+    function renderRightLateTasks() {
+      const late = tasks.filter(isLate).sort((a, b) => parseISODate(a.deadline) - parseISODate(b.deadline)).slice(0, 3);
+      if (!late.length) {
+        rightLateTasks.innerHTML = `<div class="empty" style="padding:14px">No late tasks.</div>`;
+        return;
+      }
+      rightLateTasks.innerHTML = late.map(task => `<button class="mini-late" type="button" data-late-task="${escapeHTML(task.id)}"><span>${escapeHTML(task.label)}</span><small>${escapeHTML(formatDateShort(task.deadline))}</small></button>`).join("");
+      rightLateTasks.querySelectorAll("[data-late-task]").forEach(button => button.addEventListener("click", () => openEditModal(button.dataset.lateTask)));
+    }
+
+    function openConfigModal() {
+      settingLaunchName.value = appSettings.launchName;
+      settingLaunchDate.value = appSettings.launchDate;
+      renderConfigLists();
+      configModal.classList.add("open");
+    }
+
+    function closeConfigModal() { configModal.classList.remove("open"); }
+
+    async function saveLaunchSettings() {
+      appSettings.launchName = settingLaunchName.value.trim() || "Deadline";
+      appSettings.launchDate = settingLaunchDate.value || todayISO();
+      saveLocal();
+      render();
+      if (SUPABASE_ENABLED) {
+        try {
+          const { error } = await db.from(SUPABASE_SETTINGS_TABLE).upsert({ key: "main", value: appSettings });
+          if (error) throw error;
+          setSyncStatus("Sync");
+        } catch (error) { console.error(error); setSyncStatus("Sync issue"); }
+      }
+    }
+
+    function renderConfigLists() {
+      categories.sort(bySortOrder);
+      categoryConfigList.innerHTML = categories.map((category, index) => `
+        <div class="config-row" data-config-category="${escapeHTML(category.slug)}">
+          <div class="category-edit-grid">
+            <div class="move-stack" title="Move category">
+              <button class="mini-move" type="button" data-move-category="up" title="Move up"><i class="fa-solid fa-chevron-up"></i></button>
+              <button class="mini-move" type="button" data-move-category="down" title="Move down"><i class="fa-solid fa-chevron-down"></i></button>
+            </div>
+            <input class="input" data-category-name value="${escapeHTML(category.name)}" placeholder="Name" />
+            <input class="input" data-category-icon value="${escapeHTML(category.icon)}" placeholder="Icon" />
+            <input class="input" type="date" data-category-deadline value="${escapeHTML(category.deadline || appSettings.launchDate)}" />
+            <input class="input" type="number" min="0" data-category-target value="${escapeHTML(String(category.goal_target || 0))}" placeholder="Target" />
+            <input class="input" data-category-goal value="${escapeHTML(category.goal_text || "")}" placeholder="Description / goal" />
+            <div class="move-buttons">
+              <button class="icon-btn" type="button" data-save-category title="Save"><i class="fa-solid fa-floppy-disk"></i></button>
+              <button class="icon-btn" type="button" data-delete-category title="Delete"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+        </div>
+      `).join("");
+
+      categoryConfigList.querySelectorAll("[data-config-category]").forEach(row => {
+        const slug = row.dataset.configCategory;
+        row.querySelector("[data-save-category]").addEventListener("click", () => saveCategoryRow(row, slug));
+        row.querySelector("[data-delete-category]").addEventListener("click", () => deleteCategory(slug));
+        row.querySelector("[data-move-category='up']").addEventListener("click", () => moveCategory(slug, -1));
+        row.querySelector("[data-move-category='down']").addEventListener("click", () => moveCategory(slug, 1));
+      });
+
+      memberConfigList.innerHTML = people.map(person => `
+        <div class="config-row" data-config-member="${escapeHTML(person.name)}">
+          <div class="member-row">
+            <input class="input" data-member-name value="${escapeHTML(person.name)}" placeholder="Name" />
+            <input class="input" data-member-role value="${escapeHTML(person.role || "")}" placeholder="Role" />
+            <input class="input" data-member-bg value="${escapeHTML(person.badge_bg || "#f8fafc")}" placeholder="Badge bg" />
+            <input class="input" data-member-border value="${escapeHTML(person.badge_border || "#e2e8f0")}" placeholder="Contour" />
+            <input class="input" data-member-icon value="${escapeHTML(person.icon_color || "#64748b")}" placeholder="Icon color" />
+            <div class="move-buttons">
+              <button class="icon-btn" type="button" data-save-member title="Save"><i class="fa-solid fa-floppy-disk"></i></button>
+              <button class="icon-btn" type="button" data-delete-member title="Delete"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+        </div>
+      `).join("");
+      memberConfigList.querySelectorAll("[data-config-member]").forEach(row => {
+        const oldName = row.dataset.configMember;
+        row.querySelector("[data-save-member]").addEventListener("click", () => saveMemberRow(row, oldName));
+        row.querySelector("[data-delete-member]").addEventListener("click", () => deleteMember(oldName));
+      });
+    }
+
+    async function addCategory() {
+      const name = newCategoryName.value.trim();
+      if (!name) return;
+      const category = normalizeCategory({
+        slug: uniqueSlug(safeSlug(name)),
+        name,
+        icon: newCategoryIcon.value || "fa-circle",
+        sort_order: categories.length + 1,
+        deadline: newCategoryDeadline.value || appSettings.launchDate,
+        goal_text: newCategoryGoal.value.trim(),
+        goal_target: Number(newCategoryTarget.value || 0)
+      });
+      categories.push(category);
+      await upsertCategory(category);
+      newCategoryName.value = "";
+      newCategoryIcon.value = "";
+      newCategoryGoal.value = "";
+      newCategoryDeadline.value = "";
+      newCategoryTarget.value = "";
+      saveLocal();
+      rebuildAllInputs();
+      renderConfigLists();
+      render();
+    }
+
+    async function saveCategoryRow(row, slug) {
+      const category = categories.find(item => item.slug === slug);
+      if (!category) return;
+      category.name = row.querySelector("[data-category-name]").value.trim() || category.name;
+      category.icon = cleanIcon(row.querySelector("[data-category-icon]").value.trim() || category.icon);
+      category.goal_text = row.querySelector("[data-category-goal]").value.trim();
+      category.deadline = row.querySelector("[data-category-deadline]").value || appSettings.launchDate;
+      category.goal_target = Math.max(0, Number(row.querySelector("[data-category-target]").value || 0));
+      category.goal_progress = Math.min(Number(category.goal_progress || 0), category.goal_target || Number(category.goal_progress || 0));
+      await upsertCategory(category);
+      saveLocal();
+      rebuildAllInputs();
+      render();
+    }
+
+    async function moveCategory(slug, direction) {
+      const index = categories.findIndex(item => item.slug === slug);
+      const nextIndex = index + direction;
+      if (index < 0 || nextIndex < 0 || nextIndex >= categories.length) return;
+      [categories[index], categories[nextIndex]] = [categories[nextIndex], categories[index]];
+      categories.forEach((category, i) => category.sort_order = i + 1);
+      saveLocal();
+      if (SUPABASE_ENABLED) await Promise.all(categories.map(upsertCategory));
+      renderConfigLists();
+      render();
+    }
+
+    async function deleteCategory(slug) {
+      if (tasks.some(task => task.category === slug)) return alert("This category still has tasks. Move or delete those tasks first.");
+      categories = categories.filter(category => category.slug !== slug).map((category, index) => ({ ...category, sort_order: index + 1 }));
+      saveLocal();
+      if (SUPABASE_ENABLED) {
+        try { await db.from(SUPABASE_CATEGORY_TABLE).delete().eq("slug", slug); } catch (error) { console.error(error); }
+      }
+      rebuildAllInputs();
+      renderConfigLists();
+      render();
+    }
+
+    async function upsertCategory(category) {
+      if (!SUPABASE_ENABLED) return;
+      try {
+        const { error } = await db.from(SUPABASE_CATEGORY_TABLE).upsert({
+          slug: category.slug,
+          name: category.name,
+          icon: category.icon,
+          sort_order: category.sort_order,
+          deadline: category.deadline,
+          goal_text: category.goal_text,
+          goal_target: category.goal_target,
+          goal_progress: category.goal_progress
+        }, { onConflict: "slug" });
+        if (error) throw error;
+        setSyncStatus("Sync");
+      } catch (error) { console.error(error); setSyncStatus("Sync issue"); }
+    }
+
+    async function addMember() {
+      const name = newMemberName.value.trim();
+      if (!name || people.some(person => person.name.toLowerCase() === name.toLowerCase())) return;
+      const person = normalizePerson({
+        name,
+        role: newMemberRole.value.trim(),
+        sort_order: people.length + 1,
+        active: true,
+        badge_bg: newMemberBadgeBg.value.trim() || "#f8fafc",
+        badge_border: newMemberBadgeBorder.value.trim() || "#e2e8f0",
+        icon_color: newMemberIconColor.value.trim() || "#64748b"
+      });
+      people.push(person);
+      await upsertMember(person, name);
+      newMemberName.value = "";
+      newMemberRole.value = "";
+      newMemberBadgeBg.value = "";
+      newMemberBadgeBorder.value = "";
+      newMemberIconColor.value = "";
+      saveLocal();
+      rebuildAllInputs();
+      renderConfigLists();
+      render();
+    }
+
+    async function saveMemberRow(row, oldName) {
+      const person = people.find(item => item.name === oldName);
+      if (!person) return;
+      const newName = row.querySelector("[data-member-name]").value.trim();
+      if (!newName) return;
+      tasks = tasks.map(task => ({ ...task, assignees: task.assignees.map(name => name === oldName ? newName : name) }));
+      person.name = newName;
+      person.role = row.querySelector("[data-member-role]").value.trim();
+      person.badge_bg = row.querySelector("[data-member-bg]").value.trim() || "#f8fafc";
+      person.badge_border = row.querySelector("[data-member-border]").value.trim() || "#e2e8f0";
+      person.icon_color = row.querySelector("[data-member-icon]").value.trim() || "#64748b";
+      await upsertMember(person, oldName);
+      saveLocal();
+      rebuildAllInputs();
+      renderConfigLists();
+      render();
+    }
+
+    async function deleteMember(name) {
+      if (!confirm(`Remove ${name}?`)) return;
+      people = people.filter(person => person.name !== name);
+      tasks = tasks.map(task => ({ ...task, assignees: task.assignees.filter(item => item !== name) }));
+      saveLocal();
+      if (SUPABASE_ENABLED) {
+        try { await db.from(SUPABASE_MEMBER_TABLE).update({ active: false }).eq("name", name); } catch (error) { console.error(error); }
+      }
+      rebuildAllInputs();
+      renderConfigLists();
+      render();
+    }
+
+    async function upsertMember(person, oldName) {
+      if (!SUPABASE_ENABLED) return;
+      try {
+        if (oldName && oldName !== person.name) await db.from(SUPABASE_MEMBER_TABLE).update({ active: false }).eq("name", oldName);
+        const { error } = await db.from(SUPABASE_MEMBER_TABLE).upsert({
+          name: person.name,
+          role: person.role,
+          sort_order: person.sort_order,
+          active: true,
+          badge_bg: person.badge_bg,
+          badge_border: person.badge_border,
+          icon_color: person.icon_color
+        }, { onConflict: "name" });
+        if (error) throw error;
+        setSyncStatus("Sync");
+      } catch (error) { console.error(error); setSyncStatus("Sync issue"); }
+    }
+
+    async function changeCategoryProgress(slug, delta) {
+      const category = categories.find(item => item.slug === slug);
+      if (!category) return;
+      const target = Number(category.goal_target || 0);
+      const next = Math.max(0, Number(category.goal_progress || 0) + delta);
+      category.goal_progress = target > 0 ? Math.min(next, target) : next;
+      saveLocal();
+      render();
+      await upsertCategory(category);
+    }
+
+    async function setCategoryProgress(slug, value) {
+      const category = categories.find(item => item.slug === slug);
+      if (!category) return;
+      const target = Number(category.goal_target || 0);
+      const next = Math.max(0, Number(value || 0));
+      category.goal_progress = target > 0 ? Math.min(next, target) : next;
+      saveLocal();
+      render();
+      await upsertCategory(category);
+    }
+
+    function getPerson(name) {
+      return people.find(person => person.name === name) || {
+        name,
+        badge_bg: "#f8fafc",
+        badge_border: "#e2e8f0",
+        icon_color: "#64748b"
+      };
+    }
+
+    function groupTasks(list) {
+      return list.reduce((groups, task) => { if (!groups[task.deadline]) groups[task.deadline] = []; groups[task.deadline].push(task); return groups; }, {});
+    }
+
+    function isLate(task) { return !task.done && parseISODate(task.deadline) < stripTime(new Date()); }
+    function getCategory(slug) { return categories.find(category => category.slug === slug) || { slug, name: slug || "Category", icon: "fa-circle", deadline: appSettings.launchDate, goal_text: "" }; }
+
+    function nextRepeatDate(dateString, repeatType, interval) {
+      const date = parseISODate(dateString);
+      if (repeatType === "daily") date.setDate(date.getDate() + interval);
+      if (repeatType === "weekly") date.setDate(date.getDate() + (7 * interval));
+      if (repeatType === "monthly") date.setMonth(date.getMonth() + interval);
+      return toISO(date);
+    }
+
+    function taskDuplicateKey(task) {
+      return `${String(task.label).trim().toLowerCase().replace(/\s+/g, " ")}__${task.deadline}__${task.category}__${[...task.assignees].sort().join("|")}`;
+    }
+
+    async function cleanDuplicateTasks() {
+      const seen = new Set();
+      const cleaned = [];
+      const duplicateIds = [];
+      tasks.forEach(task => {
+        const key = taskDuplicateKey(task);
+        if (seen.has(key)) duplicateIds.push(task.id);
+        else { seen.add(key); cleaned.push(task); }
+      });
+      tasks = cleaned;
+      saveLocal();
+      render();
+      if (SUPABASE_ENABLED && duplicateIds.length) {
+        try { await db.from(SUPABASE_TABLE).delete().in("id", duplicateIds); } catch (error) { console.error(error); }
+      }
+      alert(`${duplicateIds.length} duplicate${duplicateIds.length === 1 ? "" : "s"} removed.`);
+    }
+
+    function exportTasks() {
+      const data = { tasks, categories, people, appSettings, exportedAt: new Date().toISOString() };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "avariiis-task-planner-export.json";
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importTasks(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async () => {
+        try {
+          const imported = JSON.parse(reader.result);
+          const importedTasks = Array.isArray(imported) ? imported : Array.isArray(imported.tasks) ? imported.tasks : [];
+          const existingKeys = new Set(tasks.map(taskDuplicateKey));
+          let added = [];
+          importedTasks.map(normalizeTask).forEach(task => {
+            const key = taskDuplicateKey(task);
+            if (existingKeys.has(key)) return;
+            task.id = tasks.some(existing => existing.id === task.id) ? makeId() : task.id;
+            existingKeys.add(key);
+            added.push(task);
+          });
+          for (const task of added) tasks.push(await insertTask(task));
+          saveLocal();
+          render();
+          alert(`${added.length} task${added.length === 1 ? "" : "s"} imported.`);
+        } catch { alert("Could not import this file."); }
+        finally { importFile.value = ""; }
+      };
+      reader.readAsText(file);
+    }
+
+    async function resetApp() {
+      if (!confirm("Reset the app? This removes all tasks from this app.")) return;
+      if (!confirm("Last confirmation. This cannot be undone.")) return;
+      const ids = tasks.map(task => task.id);
+      tasks = [];
+      saveLocal();
+      render();
+      if (SUPABASE_ENABLED && ids.length) {
+        try { await db.from(SUPABASE_TABLE).delete().in("id", ids); } catch (error) { console.error(error); }
+      }
+    }
+
+    function safeSlug(value) { return String(value || "category").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "") || "category"; }
+    function uniqueSlug(base) { let slug = base, i = 2; while (categories.some(category => category.slug === slug)) slug = `${base}_${i++}`; return slug; }
+    function cleanIcon(icon) { return String(icon || "fa-circle").replace("fa-solid", "").trim() || "fa-circle"; }
+    function makeId() { return window.crypto && crypto.randomUUID ? crypto.randomUUID() : "id-" + Date.now() + "-" + Math.random().toString(16).slice(2); }
+    function todayISO() { return toISO(new Date()); }
+    function toISO(date) { return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`; }
+    function parseISODate(value) { const [y, m, d] = String(value || todayISO()).split("-").map(Number); return new Date(y, m - 1, d); }
+    function stripTime(date) { return new Date(date.getFullYear(), date.getMonth(), date.getDate()); }
+    function formatDateShort(value) { return parseISODate(value).toLocaleDateString("en-US", { month: "short", day: "numeric" }); }
+    function formatDateLong(value) { return parseISODate(value).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }); }
+    function relativeDate(value) {
+      const diff = Math.round((parseISODate(value) - stripTime(new Date())) / 86400000);
+      if (diff === 0) return "Today";
+      if (diff === 1) return "Tomorrow";
+      if (diff === -1) return "Yesterday";
+      if (diff > 1) return `In ${diff} days`;
+      return `${Math.abs(diff)} days late`;
+    }
+    function escapeHTML(value) { return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
+  </script>
+</body>
+</html>
