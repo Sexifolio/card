@@ -1,0 +1,10 @@
+{
+  "name": "PAEB - Projet d'Appui à l'Entrepreneuriat au Bénin",
+  "short_name": "PAEB",
+  "icons": [
+    { "src": "assets/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ],
+  "theme_color": "#087cc2",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}
