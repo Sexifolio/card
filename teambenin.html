@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Robot FGC 2026 — Guide compact</title>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    :root{
+      --bg:#f4f7fb;
+      --surface:#ffffff;
+      --surface-soft:#f8fafc;
+      --text:#182033;
+      --muted:#667085;
+      --line:#e3e8f0;
+      --navy:#20226d;
+      --blue:#3267e3;
+      --orange:#f36f32;
+      --green:#18a875;
+      --purple:#8358d6;
+      --yellow:#f2b93b;
+      --radius:22px;
+      --sidebar:290px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      background:var(--bg);
+      color:var(--text);
+      font-family:Inter,Segoe UI,Arial,sans-serif;
+    }
+
+    button{font:inherit}
+
+    .app{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns:var(--sidebar) 1fr;
+    }
+
+    /* SIDEBAR */
+    .sidebar{
+      position:sticky;
+      top:0;
+      height:100vh;
+      background:var(--navy);
+      color:#fff;
+      padding:22px 16px;
+      overflow-y:auto;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:4px 6px 22px;
+    }
+
+    .brand-icon{
+      width:48px;
+      height:48px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      background:rgba(255,255,255,.14);
+      font-size:21px;
+    }
+
+    .brand strong{
+      display:block;
+      font-size:17px;
+    }
+
+    .brand span{
+      display:block;
+      color:rgba(255,255,255,.68);
+      font-size:13px;
+      margin-top:2px;
+    }
+
+    .chapter-label{
+      padding:0 10px 10px;
+      color:rgba(255,255,255,.55);
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .chapter-list{
+      display:grid;
+      gap:7px;
+    }
+
+    .chapter-btn{
+      width:100%;
+      border:0;
+      color:rgba(255,255,255,.76);
+      background:transparent;
+      border-radius:15px;
+      padding:12px;
+      text-align:left;
+      cursor:pointer;
+      display:grid;
+      grid-template-columns:36px 1fr auto;
+      align-items:center;
+      gap:10px;
+      transition:.18s ease;
+    }
+
+    .chapter-btn:hover{
+      background:rgba(255,255,255,.09);
+      color:#fff;
+    }
+
+    .chapter-btn.active{
+      background:#fff;
+      color:var(--navy);
+    }
+
+    .chapter-icon{
+      width:36px;
+      height:36px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      background:rgba(255,255,255,.12);
+    }
+
+    .chapter-btn.active .chapter-icon{
+      color:#fff;
+      background:var(--orange);
+    }
+
+    .chapter-name{
+      font-size:14px;
+      font-weight:750;
+      line-height:1.25;
+    }
+
+    .chapter-btn .fa-chevron-right{
+      font-size:11px;
+      opacity:.55;
+    }
+
+    .sidebar-footer{
+      margin-top:22px;
+      padding:15px;
+      border-radius:17px;
+      background:rgba(255,255,255,.09);
+      color:rgba(255,255,255,.72);
+      font-size:12px;
+      line-height:1.45;
+    }
+
+    /* MAIN */
+    .main{
+      min-width:0;
+      padding:24px clamp(18px,4vw,52px) 42px;
+    }
+
+    .mobile-bar{
+      display:none;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      margin-bottom:28px;
+    }
+
+    .breadcrumb{
+      color:var(--muted);
+      font-size:14px;
+      font-weight:650;
+    }
+
+    .top-actions{
+      display:flex;
+      gap:10px;
+    }
+
+    .icon-btn{
+      width:44px;
+      height:44px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:var(--surface);
+      color:var(--navy);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      transition:.18s ease;
+    }
+
+    .icon-btn:hover{
+      transform:translateY(-2px);
+      border-color:#cbd4e2;
+    }
+
+    .lang-btn{
+      width:auto;
+      min-width:70px;
+      padding:0 13px;
+      display:flex;
+      grid-template-columns:none;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      font-weight:900;
+    }
+
+    .lang-btn span{
+      font-size:12px;
+      letter-spacing:.05em;
+    }
+
+    .mobile-actions{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+
+    .hero{
+      display:grid;
+      grid-template-columns:1fr auto;
+      align-items:end;
+      gap:22px;
+      margin-bottom:24px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--orange);
+      font-weight:850;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      margin-bottom:10px;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(30px,5vw,54px);
+      line-height:1.02;
+      max-width:820px;
+    }
+
+    .hero p{
+      max-width:700px;
+      margin:13px 0 0;
+      color:var(--muted);
+      font-size:16px;
+    }
+
+    .chapter-number{
+      width:92px;
+      height:92px;
+      border-radius:28px;
+      display:grid;
+      place-items:center;
+      background:var(--navy);
+      color:#fff;
+      font-size:34px;
+      font-weight:900;
+    }
+
+    .function-card{
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:28px;
+      overflow:hidden;
+    }
+
+    .function-head{
+      padding:18px 20px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+    }
+
+    .function-head strong{
+      font-size:14px;
+    }
+
+    .function-actions{
+      display:flex;
+      gap:9px;
+    }
+
+    .round-action{
+      width:40px;
+      height:40px;
+      border:1px solid var(--line);
+      border-radius:13px;
+      background:var(--surface-soft);
+      color:var(--navy);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+    }
+
+    .round-action:hover{
+      background:#eef3fb;
+    }
+
+    .suggestions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      padding:20px;
+    }
+
+    .suggestion{
+      min-height:245px;
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      background:var(--surface-soft);
+    }
+
+    .suggestion.recommended{
+      background:#fff8f3;
+      border-color:#ffd8c4;
+    }
+
+    .suggestion-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .suggestion-letter{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      background:var(--navy);
+      color:#fff;
+      font-weight:900;
+    }
+
+    .recommended .suggestion-letter{
+      background:var(--orange);
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:7px 10px;
+      border-radius:999px;
+      color:#a74414;
+      background:#ffe7d9;
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .suggestion h2{
+      margin:22px 0 9px;
+      font-size:24px;
+      line-height:1.15;
+    }
+
+    .suggestion p{
+      margin:0;
+      max-width:470px;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.55;
+    }
+
+    .mini-note{
+      margin-top:22px;
+      display:flex;
+      align-items:center;
+      gap:9px;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .bottom-nav{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-top:18px;
+    }
+
+    .nav-btn{
+      border:1px solid var(--line);
+      border-radius:15px;
+      padding:11px 15px;
+      background:var(--surface);
+      color:var(--navy);
+      font-weight:800;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:9px;
+    }
+
+    .nav-btn:disabled{
+      opacity:.35;
+      cursor:not-allowed;
+    }
+
+    /* MODALS */
+    .modal{
+      position:fixed;
+      inset:0;
+      z-index:100;
+      display:none;
+      place-items:center;
+      padding:20px;
+      background:rgba(13,21,45,.58);
+    }
+
+    .modal.open{
+      display:grid;
+    }
+
+    .modal-panel{
+      width:min(620px,100%);
+      max-height:min(700px,88vh);
+      overflow:auto;
+      background:var(--surface);
+      border-radius:26px;
+      border:1px solid rgba(255,255,255,.25);
+    }
+
+    .modal-head{
+      position:sticky;
+      top:0;
+      z-index:2;
+      background:var(--surface);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:18px 20px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .modal-head h3{
+      margin:0;
+      font-size:21px;
+    }
+
+    .close-btn{
+      width:38px;
+      height:38px;
+      border:0;
+      border-radius:12px;
+      background:var(--surface-soft);
+      color:var(--navy);
+      cursor:pointer;
+    }
+
+    .modal-body{
+      padding:22px;
+    }
+
+    .modal-body p{
+      margin:0;
+      color:#475467;
+      line-height:1.65;
+    }
+
+    .info-stack{
+      display:grid;
+      gap:14px;
+    }
+
+    .info-block{
+      padding:16px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:var(--surface-soft);
+    }
+
+    .info-block strong{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      margin-bottom:7px;
+      color:var(--navy);
+    }
+
+    .tools-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    .tool-item{
+      border:1px solid var(--line);
+      border-radius:15px;
+      padding:12px 13px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background:var(--surface-soft);
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .tool-item i{
+      width:27px;
+      height:27px;
+      border-radius:9px;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      background:var(--purple);
+      font-size:12px;
+    }
+
+
+    .sidebar-separator{
+      height:1px;
+      margin:12px 10px 15px;
+      background:rgba(255,255,255,.16);
+    }
+
+    .recap-btn{ margin-bottom:5px; }
+
+    .chapter-copy{
+      min-width:0;
+      display:flex;
+      align-items:center;
+      gap:7px;
+      flex-wrap:wrap;
+    }
+
+    .priority-tag{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:20px;
+      padding:3px 7px;
+      border-radius:999px;
+      background:#fff0e8;
+      color:#b84c17;
+      border:1px solid #ffd0b9;
+      font-size:9px;
+      font-weight:900;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    .chapter-btn:not(.active) .priority-tag{
+      color:#fff;
+      background:rgba(243,111,50,.9);
+      border-color:transparent;
+    }
+
+    .eyebrow-line{
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:9px;
+      margin-bottom:10px;
+    }
+
+    .eyebrow-line .eyebrow{ margin-bottom:0; }
+
+    .hero-priority{
+      min-height:22px;
+      padding:4px 9px;
+      font-size:10px;
+    }
+
+    .recap-card{
+      overflow:hidden;
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:28px;
+    }
+
+    .recap-head{
+      padding:18px 20px;
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .recap-head strong{ font-size:15px; }
+    .recap-head span{ color:var(--muted); font-size:13px; }
+
+    .recap-list{ display:grid; }
+
+    .recap-row{
+      display:grid;
+      grid-template-columns:38px minmax(120px,.75fr) minmax(180px,1.25fr) auto;
+      align-items:center;
+      gap:13px;
+      padding:14px 20px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .recap-row:last-child{ border-bottom:0; }
+
+    .recap-row-icon{
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      background:var(--navy);
+      font-size:14px;
+    }
+
+    .recap-row strong{ font-size:14px; }
+    .recap-choice{ color:var(--muted); font-size:14px; }
+
+    .recap-open{
+      width:34px;
+      height:34px;
+      border:1px solid var(--line);
+      border-radius:11px;
+      background:var(--surface-soft);
+      color:var(--navy);
+      cursor:pointer;
+    }
+
+    .tool-section + .tool-section{
+      margin-top:24px;
+      padding-top:22px;
+      border-top:1px solid var(--line);
+    }
+
+    .tool-section-title{
+      display:flex;
+      align-items:center;
+      gap:11px;
+      margin-bottom:12px;
+    }
+
+    .tool-section-title strong{ display:block; font-size:16px; }
+    .tool-section-title small{ display:block; margin-top:2px; color:var(--muted); font-size:12px; }
+
+    .tool-letter{
+      width:34px;
+      height:34px;
+      flex:0 0 auto;
+      border-radius:11px;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      background:var(--navy);
+      font-weight:900;
+    }
+
+    .recommended-letter{ background:var(--orange); }
+
+    [hidden]{ display:none !important; }
+
+    /* MOBILE */
+    @media (max-width:900px){
+      .app{display:block}
+      .sidebar{
+        position:fixed;
+        inset:0 auto 0 0;
+        width:min(310px,86vw);
+        z-index:90;
+        transform:translateX(-105%);
+        transition:.22s ease;
+      }
+
+      .sidebar.open{
+        transform:translateX(0);
+      }
+
+      .main{
+        padding:15px 16px 34px;
+      }
+
+      .mobile-bar{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:12px;
+        margin-bottom:18px;
+      }
+
+      .mobile-title{
+        font-weight:900;
+        color:var(--navy);
+      }
+
+      .topbar{display:none}
+      .hero{
+        grid-template-columns:1fr;
+        align-items:start;
+      }
+
+      .chapter-number{
+        width:66px;
+        height:66px;
+        border-radius:20px;
+        font-size:25px;
+        order:-1;
+      }
+
+      .suggestions{
+        grid-template-columns:1fr;
+      }
+
+      .suggestion{
+        min-height:220px;
+      }
+
+      .recap-row{
+        grid-template-columns:38px 1fr auto;
+      }
+
+      .recap-choice{
+        grid-column:2 / 4;
+        margin-top:-7px;
+      }
+    }
+
+    @media (max-width:520px){
+      .tools-grid{grid-template-columns:1fr}
+      .function-head{
+        align-items:flex-start;
+      }
+      .hero p{font-size:15px}
+      h1{font-size:34px}
+    }
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-icon"><i class="fa-solid fa-robot"></i></div>
+      <div>
+        <strong>Robot FGC 2026</strong>
+        <span>femCoders - Team Bénin</span>
+      </div>
+    </div>
+
+    <nav class="chapter-list" id="chapterList"></nav>
+
+    <div class="sidebar-footer">
+      <strong id="sidebarFooterTitle">Objectif :</strong><br>
+      <span id="sidebarFooterText">Construire simple, tester vite et améliorer une fonction à la fois.</span>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="mobile-bar">
+      <button class="icon-btn" id="menuBtn" aria-label="Ouvrir les chapitres">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <div class="mobile-title">Robot FGC 2026</div>
+      <div class="mobile-actions">
+        <button class="icon-btn lang-btn" id="mobileLangBtn" aria-label="Translate to English">
+          <i class="fa-solid fa-language"></i>
+          <span>EN</span>
+        </button>
+        <button class="icon-btn" id="mobileInfoBtn" aria-label="Voir les informations">
+          <i class="fa-solid fa-circle-info"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="topbar">
+      <div class="breadcrumb" id="breadcrumb">Guide compact · Fonctionnalités du robot</div>
+      <div class="top-actions">
+        <button class="icon-btn lang-btn" id="langBtn" title="Translate to English" aria-label="Translate to English">
+          <i class="fa-solid fa-language"></i>
+          <span>EN</span>
+        </button>
+        <button class="icon-btn" id="rulesBtn" title="Règles importantes" aria-label="Règles importantes">
+          <i class="fa-solid fa-scale-balanced"></i>
+        </button>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div>
+        <div class="eyebrow-line">
+          <div class="eyebrow" id="chapterEyebrow">
+            <i class="fa-solid fa-bolt"></i>
+            Chapitre 1
+          </div>
+          <span class="priority-tag hero-priority" id="priorityTag" hidden></span>
+        </div>
+        <h1 id="chapterTitle">Se déplacer vite et bien</h1>
+        <p id="chapterSubtitle">Choisir une base stable et facile à piloter.</p>
+      </div>
+      <div class="chapter-number" id="chapterNumber">01</div>
+    </section>
+
+    <section class="function-card" id="functionCard">
+      <div class="function-head">
+        <strong id="chooseLabel">Choisis une approche</strong>
+        <div class="function-actions">
+          <button class="round-action" id="infoBtn" title="Voir les explications" aria-label="Voir les explications">
+            <i class="fa-solid fa-circle-info"></i>
+          </button>
+          <button class="round-action" id="toolsBtn" title="Voir les pièces et outils" aria-label="Voir les pièces et outils">
+            <i class="fa-solid fa-toolbox"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="suggestions">
+        <article class="suggestion recommended">
+          <div>
+            <div class="suggestion-top">
+              <div class="suggestion-letter">A</div>
+              <span class="badge">
+                <i class="fa-solid fa-star"></i>
+                <span id="recommendedLabel">Recommandée</span>
+              </span>
+            </div>
+            <h2 id="optionATitle">Châssis 6 roues</h2>
+            <p id="optionAText">Stable, solide et simple à contrôler pendant les contacts.</p>
+          </div>
+          <div class="mini-note">
+            <i class="fa-solid fa-circle-plus"></i>
+            <span class="detailsLabel">Détails dans l’icône information</span>
+          </div>
+        </article>
+
+        <article class="suggestion">
+          <div>
+            <div class="suggestion-top">
+              <div class="suggestion-letter">B</div>
+            </div>
+            <h2 id="optionBTitle">4 roues + omni</h2>
+            <p id="optionBText">Plus léger et plus facile à faire tourner.</p>
+          </div>
+          <div class="mini-note">
+            <i class="fa-solid fa-circle-plus"></i>
+            <span class="detailsLabel">Détails dans l’icône information</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+
+    <section class="recap-card" id="recapCard" hidden>
+      <div class="recap-head">
+        <strong id="recapHeadTitle">Configuration recommandée</strong>
+        <span id="recapHeadText">Une décision claire par fonction</span>
+      </div>
+      <div class="recap-list" id="recapList"></div>
+    </section>
+
+    <div class="bottom-nav" id="bottomNav">
+      <button class="nav-btn" id="prevBtn">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span id="prevLabel">Précédent</span>
+      </button>
+      <button class="nav-btn" id="nextBtn">
+        <span id="nextLabel">Suivant</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL INFORMATIONS -->
+<div class="modal" id="infoModal" role="dialog" aria-modal="true">
+  <div class="modal-panel">
+    <div class="modal-head">
+      <h3 id="infoModalTitle">À savoir</h3>
+      <button class="close-btn" data-close aria-label="Fermer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="info-stack">
+        <div class="info-block">
+          <strong><i class="fa-solid fa-bullseye"></i> <span id="roleLabel">Rôle</span></strong>
+          <p id="roleText"></p>
+        </div>
+        <div class="info-block">
+          <strong><i class="fa-solid fa-circle-exclamation"></i> <span id="importanceLabel">Pourquoi c’est important</span></strong>
+          <p id="importanceText"></p>
+        </div>
+        <div class="info-block">
+          <strong><i class="fa-solid fa-star"></i> <span id="optionALabel">Option A</span></strong>
+          <p id="optionADetails"></p>
+        </div>
+        <div class="info-block">
+          <strong><i class="fa-solid fa-shapes"></i> <span id="optionBLabel">Option B</span></strong>
+          <p id="optionBDetails"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL OUTILS -->
+<div class="modal" id="toolsModal" role="dialog" aria-modal="true">
+  <div class="modal-panel">
+    <div class="modal-head">
+      <h3 id="toolsModalTitle">Pièces et outils</h3>
+      <button class="close-btn" data-close aria-label="Fermer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="tool-section">
+        <div class="tool-section-title">
+          <span class="tool-letter recommended-letter">A</span>
+          <div>
+            <strong id="toolsATitle">Suggestion A</strong>
+            <small id="recommendedOptionLabel">Option recommandée</small>
+          </div>
+        </div>
+        <div class="tools-grid" id="toolsAGrid"></div>
+      </div>
+
+      <div class="tool-section">
+        <div class="tool-section-title">
+          <span class="tool-letter">B</span>
+          <div>
+            <strong id="toolsBTitle">Suggestion B</strong>
+            <small id="alternativeLabel">Alternative</small>
+          </div>
+        </div>
+        <div class="tools-grid" id="toolsBGrid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL RÈGLES -->
+<div class="modal" id="rulesModal" role="dialog" aria-modal="true">
+  <div class="modal-panel">
+    <div class="modal-head">
+      <h3 id="rulesModalTitle">Règles importantes</h3>
+      <button class="close-btn" data-close aria-label="Fermer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="info-stack">
+        <div class="info-block">
+          <strong><i class="fa-solid fa-cube"></i> <span id="startSizeLabel">Taille au départ</span></strong>
+          <p id="startSizeText">Le robot doit entrer dans un volume de 50 × 50 × 50 cm.</p>
+        </div>
+        <div class="info-block">
+          <strong><i class="fa-solid fa-up-right-and-down-left-from-center"></i> <span id="extensionLabel">Extension</span></strong>
+          <p id="extensionText">Après le départ, il peut s’étendre de 50 cm dans une seule direction horizontale à la fois.</p>
+        </div>
+        <div class="info-block">
+          <strong><i class="fa-solid fa-stopwatch"></i> <span id="matchLabel">Match</span></strong>
+          <p id="matchText">Le match dure 2 minutes et 30 secondes.</p>
+        </div>
+        <div class="info-block">
+          <strong><i class="fa-solid fa-shield"></i> <span id="safetyLabel">Sécurité</span></strong>
+          <p id="safetyText">Le robot doit rester solide, sans bords dangereux et sans pièces qui se détachent.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const content = {
+    fr: {
+      ui: {
+        breadcrumb:"Guide compact · Fonctionnalités du robot",
+        sidebarFooterTitle:"Objectif :",
+        sidebarFooterText:"Construire simple, tester vite et améliorer une fonction à la fois.",
+        recap:"Résumé",
+        core:"Fonctions principales",
+        good:"Bon à avoir",
+        overview:"Vue d’ensemble",
+        recapTitle:"Résumé des recommandations",
+        recapSubtitle:"La configuration conseillée, fonction par fonction.",
+        recapHeadTitle:"Configuration recommandée",
+        recapHeadText:"Une décision claire par fonction",
+        chapter:"Chapitre",
+        priority:"Priorité",
+        choose:"Choisis une approche",
+        recommended:"Recommandée",
+        details:"Détails dans l’icône information",
+        previous:"Précédent",
+        next:"Suivant",
+        role:"Rôle",
+        importance:"Pourquoi c’est important",
+        optionA:"Option A",
+        optionB:"Option B",
+        parts:"Pièces",
+        recommendedOption:"Option recommandée",
+        alternative:"Alternative",
+        rules:"Règles importantes",
+        startSize:"Taille au départ",
+        startSizeText:"Le robot doit entrer dans un volume de 50 × 50 × 50 cm.",
+        extension:"Extension",
+        extensionText:"Après le départ, il peut s’étendre de 50 cm dans une seule direction horizontale à la fois.",
+        match:"Match",
+        matchText:"Le match dure 2 minutes et 30 secondes.",
+        safety:"Sécurité",
+        safetyText:"Le robot doit rester solide, sans bords dangereux et sans pièces qui se détachent.",
+        open:"Ouvrir",
+        close:"Fermer",
+        info:"Voir les explications",
+        tools:"Voir les pièces et outils",
+        menu:"Ouvrir les chapitres",
+        translate:"Translate to English",
+        langButton:"EN"
+      },
+      chapters: [
+        {
+          icon:"fa-car-side", title:"Se déplacer", subtitle:"Choisir une base stable et facile à piloter.",
+          role:"Traverser rapidement le terrain, tourner facilement et résister aux petits contacts.",
+          importance:"Un bon châssis fait gagner du temps pendant toutes les autres actions.",
+          aTitle:"Châssis 6 roues", aText:"Stable, solide et simple à contrôler pendant les contacts.",
+          aDetails:"Deux moteurs entraînent les roues avec des chaînes. Les roues centrales peuvent être légèrement plus basses pour faciliter les virages.",
+          bTitle:"4 roues + omni", bText:"Plus léger et plus facile à faire tourner.",
+          bDetails:"Deux roues de traction donnent l’adhérence. Deux roues omni rendent les virages plus simples, mais le robot pousse moins fort.",
+          aTools:["2 moteurs UltraPlanetary","6 roues de traction 90 mm","Chaîne #25","Pignons","Axes hexagonaux","C Channels"],
+          bTools:["2 moteurs UltraPlanetary","2 roues de traction 90 mm","2 roues omni","Axes hexagonaux","Roulements","C Channels"]
+        },
+        {
+          icon:"fa-arrows-down-to-line", title:"Ramasser", subtitle:"Attraper plusieurs balles sans viser parfaitement.", priority:1,
+          role:"Faire entrer rapidement les balles dans le robot depuis le sol.",
+          importance:"Le robot ne peut pas marquer ce qu’il ne réussit pas à ramasser.",
+          aTitle:"Double rouleau souple", aText:"Large ouverture et ramassage rapide de plusieurs balles.",
+          aDetails:"Un premier rouleau attire les balles. Un second rouleau les pousse vers le stockage intérieur.",
+          bTitle:"Rouleau à palettes", bText:"Tolérant quand les balles arrivent de travers.",
+          bDetails:"Les flap wheels agissent comme des petites brosses. Une rampe inclinée guide ensuite les balles vers l’intérieur.",
+          aTools:["1 moteur UltraPlanetary","Roues compliant","2 axes longs","Courroie ronde","Poulies","Guides en polycarbonate"],
+          bTools:["1 moteur UltraPlanetary","Flap wheels","1 axe long","Rampe en polycarbonate","Poulies","Capteur de distance"]
+        },
+        {
+          icon:"fa-box-open", title:"Stocker", subtitle:"Faire circuler les balles sans blocage.",
+          role:"Garder plusieurs balles puis les envoyer vers le système de marquage.",
+          importance:"Les bourrages peuvent bloquer toute la partie haute du robot.",
+          aTitle:"Convoyeur vertical", aText:"Les balles montent une par une de manière contrôlée.",
+          aDetails:"Deux lignes de roues ou de courroies serrent légèrement les balles et les font avancer régulièrement.",
+          bTitle:"Trémie inclinée", bText:"Stocke plus de balles avec une construction simple.",
+          bDetails:"Les parois dirigent les balles vers une sortie. Un petit agitateur évite qu’elles restent coincées.",
+          aTools:["1 moteur UltraPlanetary","Courroies rondes","Poulies","Roues compliant","Axes hexagonaux","Capteur de couleur"],
+          bTools:["1 moteur Core Hex","Plastique ondulé","Agitateur","Tubes chirurgicaux","1 axe","Capteur de distance"]
+        },
+        {
+          icon:"fa-arrow-up", title:"Marquer", subtitle:"Déposer les balles dans la Suppression Unit.", priority:2,
+          role:"Amener les balles jusqu’à l’ouverture haute puis les déposer proprement.",
+          importance:"Chaque balle contenue dans la Suppression Unit rapporte des points à l’alliance régionale.",
+          aTitle:"Élévateur + bec", aText:"Précis, continu et facile à contrôler.",
+          aDetails:"Le convoyeur monte verticalement. Un petit bec de sortie guide les balles directement dans l’ouverture.",
+          bTitle:"Godet élévateur", bText:"Monte plusieurs balles dans un seul cycle.",
+          bDetails:"Le godet reçoit plusieurs balles, monte puis pivote pour les vider. Le système est plus lent mais simple à comprendre.",
+          aTools:["1 moteur UltraPlanetary","Linear Motion Kit","Chaîne #25","Bec en polycarbonate","1 servo","Fins de course"],
+          bTools:["1 moteur UltraPlanetary","Linear Motion Kit","Godet en plastique","1 servo puissant","Cordon UHMWPE","Fins de course"]
+        },
+        {
+          icon:"fa-mountain", title:"Grimper", subtitle:"Atteindre la Zone 3 du Brace.", priority:3,
+          role:"Commencer en Zone 1 puis déplacer tout le robot jusqu’à la Zone 3.",
+          importance:"La montée augmente le multiplicateur appliqué aux points de la Suppression Unit.",
+          aTitle:"Roues qui pincent", aText:"Le tube est serré entre des roues motrices.",
+          aDetails:"Deux roues souples pincent le Brace et entraînent le robot vers le haut. Un verrou empêche le robot de redescendre.",
+          bTitle:"Crochet + treuil", bText:"Puissant et compact avec un bon rapport de réduction.",
+          bDetails:"Un crochet saisit le Brace. Un treuil enroule un cordon et tire progressivement le robot vers le haut.",
+          aTools:["2 moteurs UltraPlanetary","Grip wheels ou cone wheels","Axes hexagonaux","Roulements","1 servo de verrou","Fins de course"],
+          bTools:["2 moteurs UltraPlanetary","Crochet","Cordon UHMWPE","Poulies","Tambour de treuil","1 servo"]
+        },
+        {
+          icon:"fa-shield-halved", title:"Fire Shield", subtitle:"Envoyer et récupérer les balles près du joueur humain.",
+          role:"Pousser les balles dans le port puis récupérer celles libérées par la chute.",
+          importance:"Cette fonction aide à marquer dans l’Extinguisher et à collaborer avec le joueur humain.",
+          aTitle:"Intake réversible", aText:"Un seul mécanisme pour aspirer et pousser.",
+          aDetails:"Le sens du moteur est inversé pour pousser les balles dans le port. Le même intake les récupère à la sortie de la chute.",
+          bTitle:"Canal latéral", bText:"Plus précis près du port du Fire Shield.",
+          bDetails:"Un guide rabattable aligne les balles avec le port et peut servir de petit récepteur sous la chute.",
+          aTools:["Intake existant","Commande moteur inversée","Guides en polycarbonate","Capteur de distance"],
+          bTools:["1 servo","Charnières 15 mm","Canal en polycarbonate","Capteur tactile","Vis M3"]
+        },
+        {
+          icon:"fa-people-carry-box", title:"Aider un allié", subtitle:"Soutenir un robot partenaire pendant la montée.",
+          role:"Porter entièrement un robot partenaire grâce au robot en contact avec le Brace.",
+          importance:"Une montée partenaire peut rapporter 25 points supplémentaires à l’alliance.",
+          aTitle:"Plateforme d’amarrage", aText:"Le partenaire se pose avant la montée.",
+          aDetails:"Une plateforme rabattable reçoit une partie du robot allié. Les deux robots commencent ensuite leur montée depuis la Zone 1.",
+          bTitle:"Fourche de levage", bText:"Le partenaire est soulevé après la montée.",
+          bDetails:"Une fourche basse se déploie pour récupérer puis soulever complètement un robot partenaire.",
+          aTools:["C Channels","Plateforme en polycarbonate","Charnières","1 servo","Renforts","Capteur tactile"],
+          bTools:["Profilés longs","Fourche renforcée","Cordon UHMWPE","Poulies","1 à 2 servos","Capteur tactile"]
+        },
+        {
+          icon:"fa-camera", title:"Aider le pilote", subtitle:"Réduire les erreurs grâce aux capteurs.",
+          role:"Aider le pilote à s’aligner avec les structures et à arrêter les mécanismes au bon moment.",
+          importance:"Un robot facile à piloter est plus rapide et plus régulier sous la pression.",
+          aTitle:"Caméra + AprilTags", aText:"Aide visuelle pour corriger automatiquement l’angle.",
+          aDetails:"La caméra détecte les AprilTags. Le programme peut corriger la rotation pendant que le pilote contrôle l’avancement.",
+          bTitle:"Capteurs simples", bText:"Plus facile à programmer et très fiable.",
+          bDetails:"Le capteur de distance contrôle l’approche. Les capteurs tactiles et les fins de course confirment les positions.",
+          aTools:["Caméra Logitech C270","Control Hub","Support caméra","AprilTags","OnBot Java ou Blocks"],
+          bTools:["Capteur de distance 2 m","Capteurs tactiles","Fins de course","Capteurs de couleur","Control Hub"]
+        }
+      ]
+    },
+
+    en: {
+      ui: {
+        breadcrumb:"Compact guide · Robot functions",
+        sidebarFooterTitle:"Goal:",
+        sidebarFooterText:"Build simply, test quickly, and improve one function at a time.",
+        recap:"Summary",
+        core:"Core functions",
+        good:"Good to have",
+        overview:"Overview",
+        recapTitle:"Recommendation summary",
+        recapSubtitle:"The recommended setup for each function.",
+        recapHeadTitle:"Recommended configuration",
+        recapHeadText:"One clear choice per function",
+        chapter:"Chapter",
+        priority:"Priority",
+        choose:"Choose an approach",
+        recommended:"Recommended",
+        details:"Details in the information panel",
+        previous:"Previous",
+        next:"Next",
+        role:"Purpose",
+        importance:"Why it matters",
+        optionA:"Option A",
+        optionB:"Option B",
+        parts:"Parts",
+        recommendedOption:"Recommended option",
+        alternative:"Alternative",
+        rules:"Important rules",
+        startSize:"Starting size",
+        startSizeText:"The robot must fit inside a 50 × 50 × 50 cm volume.",
+        extension:"Extension",
+        extensionText:"After the match starts, it may extend 50 cm in only one horizontal direction at a time.",
+        match:"Match",
+        matchText:"A match lasts 2 minutes and 30 seconds.",
+        safety:"Safety",
+        safetyText:"The robot must remain solid, have no dangerous edges, and must not drop parts.",
+        open:"Open",
+        close:"Close",
+        info:"View explanations",
+        tools:"View parts and tools",
+        menu:"Open chapters",
+        translate:"Passer en français",
+        langButton:"FR"
+      },
+      chapters: [
+        {
+          icon:"fa-car-side", title:"Drive", subtitle:"Choose a stable base that is easy to control.",
+          role:"Cross the field quickly, turn easily, and handle light robot contact.",
+          importance:"A good drivetrain saves time during every other action.",
+          aTitle:"6-wheel drivetrain", aText:"Stable, strong, and easy to control during contact.",
+          aDetails:"Two motors drive the wheels with chains. The center wheels can sit slightly lower to make turning easier.",
+          bTitle:"4 wheels + omni", bText:"Lighter and easier to turn.",
+          bDetails:"Two traction wheels provide grip. Two omni wheels simplify turning, but the robot pushes with less force.",
+          aTools:["2 UltraPlanetary motors","6 × 90 mm traction wheels","#25 chain","Sprockets","Hex shafts","C Channels"],
+          bTools:["2 UltraPlanetary motors","2 × 90 mm traction wheels","2 omni wheels","Hex shafts","Bearings","C Channels"]
+        },
+        {
+          icon:"fa-arrows-down-to-line", title:"Collect", subtitle:"Pick up several balls without perfect alignment.", priority:1,
+          role:"Bring balls from the floor into the robot quickly.",
+          importance:"The robot cannot score balls that it cannot collect.",
+          aTitle:"Dual soft rollers", aText:"A wide opening that collects several balls quickly.",
+          aDetails:"The first roller pulls the balls in. A second roller moves them into the internal storage area.",
+          bTitle:"Flap-wheel roller", bText:"Works well when balls arrive at an angle.",
+          bDetails:"Flap wheels act like small brushes. An inclined ramp then guides the balls inside.",
+          aTools:["1 UltraPlanetary motor","Compliant wheels","2 long shafts","Round belt","Pulleys","Polycarbonate guides"],
+          bTools:["1 UltraPlanetary motor","Flap wheels","1 long shaft","Polycarbonate ramp","Pulleys","Distance sensor"]
+        },
+        {
+          icon:"fa-box-open", title:"Store", subtitle:"Move balls without jams.",
+          role:"Hold several balls and feed them into the scoring mechanism.",
+          importance:"A jam can stop the robot’s entire upper mechanism.",
+          aTitle:"Vertical conveyor", aText:"Moves balls upward one at a time with control.",
+          aDetails:"Two rows of wheels or belts lightly squeeze the balls and move them steadily upward.",
+          bTitle:"Sloped hopper", bText:"Stores more balls with a simple structure.",
+          bDetails:"The walls guide balls toward an exit. A small agitator prevents them from getting stuck.",
+          aTools:["1 UltraPlanetary motor","Round belts","Pulleys","Compliant wheels","Hex shafts","Color sensor"],
+          bTools:["1 Core Hex motor","Corrugated plastic","Agitator","Surgical tubing","1 shaft","Distance sensor"]
+        },
+        {
+          icon:"fa-arrow-up", title:"Score", subtitle:"Place balls inside the Suppression Unit.", priority:2,
+          role:"Raise the balls to the upper opening and place them cleanly inside.",
+          importance:"Every ball contained in the Suppression Unit scores points for the regional alliance.",
+          aTitle:"Lift + exit chute", aText:"Precise, continuous, and easy to control.",
+          aDetails:"The conveyor rises vertically. A small exit chute guides the balls directly into the opening.",
+          bTitle:"Elevator bucket", bText:"Carries several balls in one cycle.",
+          bDetails:"The bucket receives several balls, rises, and tips to empty them. It is slower but easy to understand.",
+          aTools:["1 UltraPlanetary motor","Linear Motion Kit","#25 chain","Polycarbonate chute","1 servo","Limit switches"],
+          bTools:["1 UltraPlanetary motor","Linear Motion Kit","Plastic bucket","1 high-torque servo","UHMWPE cord","Limit switches"]
+        },
+        {
+          icon:"fa-mountain", title:"Climb", subtitle:"Reach Zone 3 on the Brace.", priority:3,
+          role:"Start in Zone 1 and move the entire robot to Zone 3.",
+          importance:"Climbing increases the multiplier applied to the Suppression Unit points.",
+          aTitle:"Pinch wheels", aText:"Powered wheels grip both sides of the pipe.",
+          aDetails:"Two soft wheels pinch the Brace and drive the robot upward. A lock keeps the robot from sliding back down.",
+          bTitle:"Hook + winch", bText:"Powerful and compact with the right gear reduction.",
+          bDetails:"A hook grabs the Brace. A winch winds a cord and gradually pulls the robot upward.",
+          aTools:["2 UltraPlanetary motors","Grip or cone wheels","Hex shafts","Bearings","1 locking servo","Limit switches"],
+          bTools:["2 UltraPlanetary motors","Hook","UHMWPE cord","Pulleys","Winch drum","1 servo"]
+        },
+        {
+          icon:"fa-shield-halved", title:"Use the Fire Shield", subtitle:"Send and receive balls near the human player.",
+          role:"Push balls through the port and collect those released from the chute.",
+          importance:"This function helps score in the Extinguisher and improves teamwork with the human player.",
+          aTitle:"Reversible intake", aText:"One mechanism that can pull and push.",
+          aDetails:"Reverse the motor direction to push balls through the port. The same intake collects them below the chute.",
+          bTitle:"Side channel", bText:"More precise near the Fire Shield port.",
+          bDetails:"A folding guide aligns balls with the port and can also catch balls below the chute.",
+          aTools:["Existing intake","Reversible motor control","Polycarbonate guides","Distance sensor"],
+          bTools:["1 servo","15 mm hinges","Polycarbonate channel","Touch sensor","M3 screws"]
+        },
+        {
+          icon:"fa-people-carry-box", title:"Support a partner", subtitle:"Carry an alliance robot during the climb.",
+          role:"Fully support a partner robot through the robot that is in contact with the Brace.",
+          importance:"A partner climb can add 25 points to the alliance score.",
+          aTitle:"Docking platform", aText:"The partner docks before the climb.",
+          aDetails:"A folding platform supports part of the alliance robot. Both robots then begin the climb from Zone 1.",
+          bTitle:"Lifting fork", bText:"The partner is lifted after the climb.",
+          bDetails:"A low fork deploys to collect and fully lift a partner robot.",
+          aTools:["C Channels","Polycarbonate platform","Hinges","1 servo","Reinforcements","Touch sensor"],
+          bTools:["Long extrusions","Reinforced fork","UHMWPE cord","Pulleys","1–2 servos","Touch sensor"]
+        },
+        {
+          icon:"fa-camera", title:"Assist the driver", subtitle:"Reduce mistakes with sensors.",
+          role:"Help the driver align with field structures and stop mechanisms at the correct position.",
+          importance:"A robot that is easy to drive is faster and more consistent under pressure.",
+          aTitle:"Camera + AprilTags", aText:"Visual assistance that automatically corrects the angle.",
+          aDetails:"The camera detects AprilTags. The program can correct rotation while the driver controls forward movement.",
+          bTitle:"Simple sensors", bText:"Easier to program and very reliable.",
+          bDetails:"The distance sensor controls the approach. Touch sensors and limit switches confirm mechanism positions.",
+          aTools:["Logitech C270 camera","Control Hub","Camera mount","AprilTags","OnBot Java or Blocks"],
+          bTools:["2 m distance sensor","Touch sensors","Limit switches","Color sensors","Control Hub"]
+        }
+      ]
+    }
+  };
+
+  const CORE_END_INDEX = 4;
+  let current = 0;
+  let viewMode = "recap";
+  let currentLang = localStorage.getItem("fgc-guide-language") === "en" ? "en" : "fr";
+
+  const chapterList = document.getElementById("chapterList");
+  const sidebar = document.getElementById("sidebar");
+  const functionCard = document.getElementById("functionCard");
+  const recapCard = document.getElementById("recapCard");
+  const bottomNav = document.getElementById("bottomNav");
+  const priorityTag = document.getElementById("priorityTag");
+
+  function getUI(){ return content[currentLang].ui; }
+  function getChapters(){ return content[currentLang].chapters; }
+
+  function setText(id, value){
+    const element = document.getElementById(id);
+    if(element) element.textContent = value;
+  }
+
+  function setLanguageButton(buttonId){
+    const button = document.getElementById(buttonId);
+    if(!button) return;
+    const ui = getUI();
+    button.querySelector("span").textContent = ui.langButton;
+    button.title = ui.translate;
+    button.setAttribute("aria-label", ui.translate);
+  }
+
+  function applyStaticLanguage(){
+    const ui = getUI();
+    document.documentElement.lang = currentLang;
+    document.title = currentLang === "fr"
+      ? "Robot FGC 2026 — Guide compact"
+      : "FGC 2026 Robot — Compact Guide";
+
+    setText("breadcrumb", ui.breadcrumb);
+    setText("sidebarFooterTitle", ui.sidebarFooterTitle);
+    setText("sidebarFooterText", ui.sidebarFooterText);
+    setText("chooseLabel", ui.choose);
+    setText("recommendedLabel", ui.recommended);
+    document.querySelectorAll(".detailsLabel").forEach(el => el.textContent = ui.details);
+    setText("recapHeadTitle", ui.recapHeadTitle);
+    setText("recapHeadText", ui.recapHeadText);
+    setText("prevLabel", ui.previous);
+    setText("nextLabel", ui.next);
+    setText("roleLabel", ui.role);
+    setText("importanceLabel", ui.importance);
+    setText("optionALabel", ui.optionA);
+    setText("optionBLabel", ui.optionB);
+    setText("recommendedOptionLabel", ui.recommendedOption);
+    setText("alternativeLabel", ui.alternative);
+    setText("rulesModalTitle", ui.rules);
+    setText("startSizeLabel", ui.startSize);
+    setText("startSizeText", ui.startSizeText);
+    setText("extensionLabel", ui.extension);
+    setText("extensionText", ui.extensionText);
+    setText("matchLabel", ui.match);
+    setText("matchText", ui.matchText);
+    setText("safetyLabel", ui.safety);
+    setText("safetyText", ui.safetyText);
+
+    setLanguageButton("langBtn");
+    setLanguageButton("mobileLangBtn");
+
+    const menuBtn = document.getElementById("menuBtn");
+    menuBtn.setAttribute("aria-label", ui.menu);
+
+    const infoBtn = document.getElementById("infoBtn");
+    infoBtn.title = ui.info;
+    infoBtn.setAttribute("aria-label", ui.info);
+
+    const toolsBtn = document.getElementById("toolsBtn");
+    toolsBtn.title = ui.tools;
+    toolsBtn.setAttribute("aria-label", ui.tools);
+
+    const rulesBtn = document.getElementById("rulesBtn");
+    rulesBtn.title = ui.rules;
+    rulesBtn.setAttribute("aria-label", ui.rules);
+
+    const mobileInfoBtn = document.getElementById("mobileInfoBtn");
+    mobileInfoBtn.setAttribute("aria-label", ui.info);
+
+    document.querySelectorAll("[data-close]").forEach(btn => {
+      btn.setAttribute("aria-label", ui.close);
+    });
+  }
+
+  function chapterButton(c, i){
+    const ui = getUI();
+    const priority = c.priority
+      ? `<span class="priority-tag">P${c.priority}</span>`
+      : "";
+
+    return `
+      <button class="chapter-btn ${viewMode==="chapter" && i===current ? "active":""}" data-index="${i}">
+        <span class="chapter-icon"><i class="fa-solid ${c.icon}"></i></span>
+        <span class="chapter-copy">
+          <span class="chapter-name">${c.title}</span>
+          ${priority}
+        </span>
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    `;
+  }
+
+  function buildSidebar(){
+    const ui = getUI();
+    const chapters = getChapters();
+
+    const core = chapters.slice(0, CORE_END_INDEX + 1)
+      .map((c,i)=>chapterButton(c,i)).join("");
+
+    const goodToHave = chapters.slice(CORE_END_INDEX + 1)
+      .map((c,i)=>chapterButton(c,i + CORE_END_INDEX + 1)).join("");
+
+    chapterList.innerHTML = `
+      <button class="chapter-btn recap-btn ${viewMode==="recap" ? "active":""}" id="recapBtn">
+        <span class="chapter-icon"><i class="fa-solid fa-list-check"></i></span>
+        <span class="chapter-name">${ui.recap}</span>
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+
+      <div class="sidebar-separator"></div>
+      <div class="chapter-label">${ui.core}</div>
+      ${core}
+
+      <div class="sidebar-separator"></div>
+      <div class="chapter-label">${ui.good}</div>
+      ${goodToHave}
+    `;
+
+    document.getElementById("recapBtn").addEventListener("click",()=>{
+      viewMode = "recap";
+      render();
+      sidebar.classList.remove("open");
+    });
+
+    chapterList.querySelectorAll("[data-index]").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        current = Number(btn.dataset.index);
+        viewMode = "chapter";
+        render();
+        sidebar.classList.remove("open");
+      });
+    });
+  }
+
+  function buildRecap(){
+    const ui = getUI();
+    const chapters = getChapters();
+
+    document.getElementById("recapList").innerHTML = chapters.map((c,i)=>`
+      <div class="recap-row">
+        <div class="recap-row-icon"><i class="fa-solid ${c.icon}"></i></div>
+        <strong>${c.title}</strong>
+        <div class="recap-choice">${c.aTitle}</div>
+        <button class="recap-open" data-open-index="${i}" title="${ui.open}" aria-label="${ui.open}">
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    `).join("");
+
+    document.querySelectorAll("[data-open-index]").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        current = Number(btn.dataset.openIndex);
+        viewMode = "chapter";
+        render();
+      });
+    });
+  }
+
+  function toolMarkup(items){
+    return items.map(tool=>`
+      <div class="tool-item">
+        <i class="fa-solid fa-screwdriver-wrench"></i>
+        <span>${tool}</span>
+      </div>
+    `).join("");
+  }
+
+  function render(){
+    const ui = getUI();
+    const chapters = getChapters();
+    applyStaticLanguage();
+
+    if(viewMode === "recap"){
+      document.getElementById("chapterEyebrow").innerHTML =
+        `<i class="fa-solid fa-list-check"></i> ${ui.overview}`;
+      setText("chapterTitle", ui.recapTitle);
+      setText("chapterSubtitle", ui.recapSubtitle);
+      document.getElementById("chapterNumber").innerHTML =
+        `<i class="fa-solid fa-list-check"></i>`;
+
+      priorityTag.hidden = true;
+      functionCard.hidden = true;
+      recapCard.hidden = false;
+      bottomNav.hidden = true;
+
+      buildRecap();
+      buildSidebar();
+      window.scrollTo({top:0,behavior:"smooth"});
+      return;
+    }
+
+    const c = chapters[current];
+
+    document.getElementById("chapterEyebrow").innerHTML =
+      `<i class="fa-solid ${c.icon}"></i> ${ui.chapter} ${current+1}`;
+    setText("chapterTitle", c.title);
+    setText("chapterSubtitle", c.subtitle);
+    setText("chapterNumber", String(current+1).padStart(2,"0"));
+
+    if(c.priority){
+      priorityTag.textContent = `${ui.priority} ${c.priority}`;
+      priorityTag.hidden = false;
+    }else{
+      priorityTag.hidden = true;
+    }
+
+    setText("optionATitle", c.aTitle);
+    setText("optionAText", c.aText);
+    setText("optionBTitle", c.bTitle);
+    setText("optionBText", c.bText);
+
+    setText("infoModalTitle", c.title);
+    setText("roleText", c.role);
+    setText("importanceText", c.importance);
+    setText("optionADetails", c.aDetails);
+    setText("optionBDetails", c.bDetails);
+
+    setText("toolsModalTitle", `${ui.parts} — ${c.title}`);
+    setText("toolsATitle", c.aTitle);
+    setText("toolsBTitle", c.bTitle);
+    document.getElementById("toolsAGrid").innerHTML = toolMarkup(c.aTools);
+    document.getElementById("toolsBGrid").innerHTML = toolMarkup(c.bTools);
+
+    functionCard.hidden = false;
+    recapCard.hidden = true;
+    bottomNav.hidden = false;
+
+    document.getElementById("prevBtn").disabled = current === 0;
+    document.getElementById("nextBtn").disabled = current === chapters.length-1;
+
+    buildSidebar();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function toggleLanguage(){
+    currentLang = currentLang === "fr" ? "en" : "fr";
+    localStorage.setItem("fgc-guide-language", currentLang);
+    render();
+  }
+
+  function openModal(id){
+    document.getElementById(id).classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal(modal){
+    modal.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  document.getElementById("infoBtn").addEventListener("click",()=>openModal("infoModal"));
+  document.getElementById("toolsBtn").addEventListener("click",()=>openModal("toolsModal"));
+  document.getElementById("rulesBtn").addEventListener("click",()=>openModal("rulesModal"));
+  document.getElementById("langBtn").addEventListener("click", toggleLanguage);
+  document.getElementById("mobileLangBtn").addEventListener("click", toggleLanguage);
+
+  document.getElementById("mobileInfoBtn").addEventListener("click",()=>{
+    openModal(viewMode === "recap" ? "rulesModal" : "infoModal");
+  });
+
+  document.getElementById("menuBtn").addEventListener("click",()=>{
+    sidebar.classList.toggle("open");
+  });
+
+  document.getElementById("prevBtn").addEventListener("click",()=>{
+    if(current>0){ current--; render(); }
+  });
+
+  document.getElementById("nextBtn").addEventListener("click",()=>{
+    const chapters = getChapters();
+    if(current<chapters.length-1){ current++; render(); }
+  });
+
+  document.querySelectorAll("[data-close]").forEach(btn=>{
+    btn.addEventListener("click",()=>closeModal(btn.closest(".modal")));
+  });
+
+  document.querySelectorAll(".modal").forEach(modal=>{
+    modal.addEventListener("click",(event)=>{
+      if(event.target === modal) closeModal(modal);
+    });
+  });
+
+  document.addEventListener("keydown",(event)=>{
+    if(event.key === "Escape"){
+      document.querySelectorAll(".modal.open").forEach(closeModal);
+      sidebar.classList.remove("open");
+    }
+  });
+
+  render();
+</script>
+</body>
+</html>
