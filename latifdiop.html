@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Latif DIOP - Expertise France</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root{--primary-blue:#002395;--accent-red:#EF4135;--border-gray:#e8ecf1}
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{min-height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',sans-serif;background:linear-gradient(135deg,#f0f4f8,#e5ecf4);display:flex;align-items:center;justify-content:center;padding:20px}
+    .card-container{width:100%;max-width:420px;background:#fff;border-radius:16px;box-shadow:0 25px 80px rgba(0,35,149,.12),0 5px 20px rgba(239,65,53,.08);overflow:hidden;animation:slideIn .6s ease-out}
+    @keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+    .card-header{background:#fff;padding:20px 32px 24px;display:flex;flex-direction:column;align-items:center;border-bottom:3px solid transparent;border-image:linear-gradient(90deg,var(--primary-blue),var(--accent-red)) 1}
+    .logo{max-width:160px;height:auto}.language-switch{display:flex;gap:6px;align-self:flex-end;margin-bottom:8px}.language-switch button{border:1px solid var(--border-gray);background:#fff;color:var(--primary-blue);padding:5px 9px;border-radius:6px;font-weight:800;cursor:pointer}.language-switch button.active{background:var(--primary-blue);color:#fff}
+    .card-content{padding:34px 32px}.profile-section{margin-bottom:28px;text-align:center;border-bottom:2px solid var(--border-gray);padding-bottom:28px}.name{font-size:28px;font-weight:800;color:var(--primary-blue);margin-bottom:10px}.title{font-size:12px;font-weight:800;color:var(--accent-red);text-transform:uppercase;letter-spacing:1.1px;margin-bottom:14px}.regions{font-size:13px;color:#444;font-weight:600;line-height:1.6}.department{font-size:12px;color:#666;margin-top:10px;font-weight:500;line-height:1.5}
+    .section-label{font-size:11px;font-weight:800;color:var(--primary-blue);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:18px;display:block}.contact-item{display:flex;align-items:flex-start;margin-bottom:18px}.contact-icon{width:36px;color:var(--accent-red);font-size:18px;display:flex;justify-content:center}.contact-text{flex:1;font-size:13px;color:#333;line-height:1.6;word-break:break-word}.contact-text a{color:var(--primary-blue);text-decoration:none;font-weight:700}
+    .card-footer{background:linear-gradient(135deg,#f8f9fa,#f0f4f8);padding:20px 32px;text-align:center;border-top:1px solid var(--border-gray)}.add-contact-btn{display:inline-block;background:linear-gradient(135deg,var(--primary-blue),var(--accent-red));color:#fff;padding:12px 32px;border:0;border-radius:8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;cursor:pointer;box-shadow:0 4px 12px rgba(0,35,149,.25)}
+    @media(max-width:480px){.card-content{padding:30px 24px}.card-header{padding:18px 24px 22px}.name{font-size:24px}.contact-text{font-size:12px}.logo{max-width:140px}}
+  </style>
+</head>
+<body>
+<main class="card-container">
+  <header class="card-header">
+    <div class="language-switch"><button id="frBtn" class="active" onclick="setLanguage('fr')">FR</button><button id="enBtn" onclick="setLanguage('en')">EN</button></div>
+    <img src="https://upload.wikimedia.org/wikipedia/fr/b/b1/Ef-logo-2020.png" alt="Expertise France" class="logo">
+  </header>
+  <section class="card-content">
+    <div class="profile-section"><div class="name">LATIF DIOP</div><div class="title" data-fr="Chef de projet - Assistance Technique" data-en="Technical Assistance Project Manager"></div><div class="regions" data-fr="Entrepreneuriat & PME<br>Programme Choose Africa 2 Bénin" data-en="Entrepreneurship & SMEs<br>Choose Africa 2 Benin Programme"></div><div class="department" data-fr="Département Economie Durable et inclusive" data-en="Sustainable and Inclusive Economy Department"></div></div>
+    <div class="contact-section"><span class="section-label" data-fr="Contact" data-en="Contact"></span>
+      <div class="contact-item"><div class="contact-icon"><i class="fas fa-phone"></i></div><div class="contact-text"><a href="tel:+2290197631949">+229 01 97 63 19 49</a></div></div>
+      <div class="contact-item"><div class="contact-icon"><i class="fas fa-envelope"></i></div><div class="contact-text"><a href="mailto:latif.diop@expertisefrance.fr">latif.diop@expertisefrance.fr</a></div></div>
+      <div class="contact-item"><div class="contact-icon"><i class="fas fa-globe"></i></div><div class="contact-text"><a href="https://www.expertisefrance.fr" target="_blank">www.expertisefrance.fr</a></div></div>
+      <div class="contact-item"><div class="contact-icon"><i class="fas fa-map-pin"></i></div><div class="contact-text" data-fr="Cadjèhoun, Cotonou, Bénin" data-en="Cadjehoun, Cotonou, Benin"></div></div>
+    </div>
+  </section>
+  <footer class="card-footer"><button class="add-contact-btn" onclick="downloadVCard()"><i class="fas fa-plus"></i> <span data-fr="Ajouter au contact" data-en="Add to contacts"></span></button></footer>
+</main>
+<script>
+function setLanguage(lang){document.documentElement.lang=lang;document.querySelectorAll('[data-fr]').forEach(el=>el.innerHTML=el.dataset[lang]);frBtn.classList.toggle('active',lang==='fr');enBtn.classList.toggle('active',lang==='en')}
+function downloadVCard(){
+  const vCardContent=`BEGIN:VCARD
+VERSION:3.0
+PRODID:-//Expertise France//Digital Business Card//FR-EN
+FN:Latif DIOP
+N:DIOP;Latif;;;
+TITLE:Chef de projet - Assistance Technique
+ORG:Expertise France;Programme Choose Africa 2 Bénin;Département Economie Durable et inclusive
+TEL;TYPE=WORK,VOICE:+229 01 97 63 19 49
+EMAIL;TYPE=WORK:latif.diop@expertisefrance.fr
+ADR;TYPE=WORK:;;Cadjèhoun;Cotonou;;;Bénin
+URL;TYPE=WORK:https://www.expertisefrance.fr
+NOTE:Entrepreneuriat & PME\\nProgramme Choose Africa 2 Bénin\\nDépartement Economie Durable et inclusive
+REV:2026-08-19T00:00:00Z
+END:VCARD`;
+  const blob=new Blob(['\ufeff',vCardContent],{type:'text/vcard;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='latif-diop.vcf';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+setLanguage('fr');
+</script>
+</body>
+</html>
