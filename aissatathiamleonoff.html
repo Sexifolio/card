@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aïssata THIAM-LEONOFF - Expertise France</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root{--blue:#080899;--red:#ed4d57;--border:#e8ecf1}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{min-height:100%;font-family:Montserrat,Arial,sans-serif;background:linear-gradient(135deg,#f0f4f8,#e5ecf4);display:flex;align-items:center;justify-content:center;padding:20px}
+    .card{width:100%;max-width:420px;background:#fff;border-radius:16px;box-shadow:0 25px 80px rgba(0,35,149,.12),0 5px 20px rgba(239,65,53,.08);overflow:hidden}
+    header{padding:20px 32px 24px;display:flex;flex-direction:column;align-items:center;border-bottom:3px solid transparent;border-image:linear-gradient(90deg,var(--blue),var(--red)) 1}
+    .logo{max-width:160px;height:auto}.switch{display:flex;gap:6px;align-self:flex-end;margin-bottom:8px}.switch button{border:1px solid var(--border);background:#fff;color:var(--blue);padding:5px 9px;border-radius:6px;font:900 12px Montserrat,Arial;cursor:pointer}.switch button.active{background:var(--blue);color:#fff}
+    .content{padding:34px 32px}.profile{text-align:center;border-bottom:2px solid var(--border);padding-bottom:28px;margin-bottom:28px}.name{font-size:25px;font-weight:900;color:var(--blue);margin-bottom:10px}.title{font-size:12px;font-weight:900;color:var(--red);text-transform:uppercase;letter-spacing:.9px;line-height:1.55}
+    .label{display:block;font-size:11px;font-weight:900;color:var(--blue);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:18px}.item{display:flex;align-items:flex-start;margin-bottom:18px}.icon{width:36px;color:var(--red);font-size:18px;display:flex;justify-content:center}.text{flex:1;font-size:13px;font-weight:600;color:#333;line-height:1.6;word-break:break-word}.text a{color:var(--blue);text-decoration:none;font-weight:600}
+    footer{background:linear-gradient(135deg,#f8f9fa,#f0f4f8);padding:20px 32px;text-align:center;border-top:1px solid var(--border)}.add{background:linear-gradient(135deg,var(--blue),var(--red));color:#fff;padding:12px 32px;border:0;border-radius:8px;font:900 12px Montserrat,Arial;text-transform:uppercase;letter-spacing:.8px;cursor:pointer;box-shadow:0 4px 12px rgba(0,35,149,.25)}
+    @media(max-width:480px){.content{padding:30px 24px}header{padding:18px 24px 22px}.name{font-size:21px}.text{font-size:12px}.logo{max-width:140px}}
+  </style>
+</head>
+<body>
+<main class="card">
+  <header><div class="switch"><button id="frBtn" class="active" onclick="setLanguage('fr')">FR</button><button id="enBtn" onclick="setLanguage('en')">EN</button></div><img src="https://upload.wikimedia.org/wikipedia/fr/b/b1/Ef-logo-2020.png" alt="Expertise France" class="logo"></header>
+  <section class="content">
+    <div class="profile"><div class="name">AÏSSATA THIAM-LEONOFF</div><div class="title" data-fr="Cheffe de projet adjointe AT<br>Choose Africa 2 Bénin" data-en="Deputy Technical Assistance Project Manager<br>Choose Africa 2 Benin"></div></div>
+    <div><span class="label">Contact</span>
+      <div class="item"><div class="icon"><i class="fas fa-phone"></i></div><div class="text"><a href="tel:xxxxxxxxxxxxxx">xxxxxxxxxxxxxx</a></div></div>
+      <div class="item"><div class="icon"><i class="fas fa-envelope"></i></div><div class="text"><a href="mailto:aissata.thiam-leonoff@expertisefrance.fr">aissata.thiam-leonoff@expertisefrance.fr</a></div></div>
+      <div class="item"><div class="icon"><i class="fas fa-globe"></i></div><div class="text"><a href="https://www.expertisefrance.fr" target="_blank" rel="noopener">www.expertisefrance.fr</a></div></div>
+      <div class="item"><div class="icon"><i class="fas fa-map-pin"></i></div><div class="text" data-fr="Cadjèhoun, Cotonou, Bénin" data-en="Cadjehoun, Cotonou, Benin"></div></div>
+    </div>
+  </section>
+  <footer><button class="add" onclick="downloadVCard()"><i class="fas fa-plus"></i> <span data-fr="Ajouter au contact" data-en="Add to contacts"></span></button></footer>
+</main>
+<script>
+function setLanguage(lang){document.documentElement.lang=lang;document.querySelectorAll('[data-fr]').forEach(el=>el.innerHTML=el.dataset[lang]);frBtn.classList.toggle('active',lang==='fr');enBtn.classList.toggle('active',lang==='en')}
+function downloadVCard(){
+  const vCard=`BEGIN:VCARD\nVERSION:3.0\nPRODID:-//Expertise France//Digital Business Card//FR-EN\nFN:Aïssata THIAM-LEONOFF\nN:THIAM-LEONOFF;Aïssata;;;\nTITLE:Cheffe de projet adjointe AT Choose Africa 2 Bénin\nORG:Expertise France;Choose Africa 2 Bénin\nTEL;TYPE=WORK,VOICE:xxxxxxxxxxxxxx\nEMAIL;TYPE=WORK:aissata.thiam-leonoff@expertisefrance.fr\nADR;TYPE=WORK:;;Cadjèhoun;Cotonou;;;Bénin\nURL;TYPE=WORK:https://www.expertisefrance.fr\nREV:2026-09-04T00:00:00Z\nEND:VCARD`;
+  const blob=new Blob(['\ufeff',vCard],{type:'text/vcard;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='aissata-thiam-leonoff.vcf';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)
+}
+setLanguage('fr');
+</script>
+</body>
+</html>
