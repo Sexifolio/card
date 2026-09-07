@@ -27,8 +27,7 @@
   <section class="content">
     <div class="profile"><div class="name">AÏSSATA THIAM-LEONOFF</div><div class="title" data-fr="Cheffe de projet adjointe AT<br>Choose Africa 2 Bénin" data-en="Deputy Technical Assistance Project Manager<br>Choose Africa 2 Benin"></div></div>
     <div><span class="label">Contact</span>
-      <div class="item"><div class="icon"><i class="fas fa-phone"></i></div><div class="text"><a href="tel:xxxxxxxxxxxxxx">xxxxxxxxxxxxxx</a></div></div>
-      <div class="item"><div class="icon"><i class="fas fa-envelope"></i></div><div class="text"><a href="mailto:aissata.thiam-leonoff@expertisefrance.fr">aissata.thiam-leonoff@expertisefrance.fr</a></div></div>
+     <div class="item"><div class="icon"><i class="fas fa-envelope"></i></div><div class="text"><a href="mailto:aissata.thiam-leonoff@expertisefrance.fr">aissata.thiam-leonoff@expertisefrance.fr</a></div></div>
       <div class="item"><div class="icon"><i class="fas fa-globe"></i></div><div class="text"><a href="https://www.expertisefrance.fr" target="_blank" rel="noopener">www.expertisefrance.fr</a></div></div>
       <div class="item"><div class="icon"><i class="fas fa-map-pin"></i></div><div class="text" data-fr="Cadjèhoun, Cotonou, Bénin" data-en="Cadjehoun, Cotonou, Benin"></div></div>
     </div>
@@ -38,7 +37,7 @@
 <script>
 function setLanguage(lang){document.documentElement.lang=lang;document.querySelectorAll('[data-fr]').forEach(el=>el.innerHTML=el.dataset[lang]);frBtn.classList.toggle('active',lang==='fr');enBtn.classList.toggle('active',lang==='en')}
 function downloadVCard(){
-  const vCard=`BEGIN:VCARD\nVERSION:3.0\nPRODID:-//Expertise France//Digital Business Card//FR-EN\nFN:Aïssata THIAM-LEONOFF\nN:THIAM-LEONOFF;Aïssata;;;\nTITLE:Cheffe de projet adjointe AT Choose Africa 2 Bénin\nORG:Expertise France;Choose Africa 2 Bénin\nTEL;TYPE=WORK,VOICE:xxxxxxxxxxxxxx\nEMAIL;TYPE=WORK:aissata.thiam-leonoff@expertisefrance.fr\nADR;TYPE=WORK:;;Cadjèhoun;Cotonou;;;Bénin\nURL;TYPE=WORK:https://www.expertisefrance.fr\nREV:2026-09-04T00:00:00Z\nEND:VCARD`;
+  const vCard=`BEGIN:VCARD\nVERSION:3.0\nPRODID:-//Expertise France//Digital Business Card//FR-EN\nFN:Aïssata THIAM-LEONOFF\nN:THIAM-LEONOFF;Aïssata;;;\nTITLE:Cheffe de projet adjointe AT Choose Africa 2 Bénin\nORG:Expertise France;Choose Africa 2 Bénin\nTEL;TYPE=WORK,VOICE:0\nEMAIL;TYPE=WORK:aissata.thiam-leonoff@expertisefrance.fr\nADR;TYPE=WORK:;;Cadjèhoun;Cotonou;;;Bénin\nURL;TYPE=WORK:https://www.expertisefrance.fr\nREV:2026-09-04T00:00:00Z\nEND:VCARD`;
   const blob=new Blob(['\ufeff',vCard],{type:'text/vcard;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='aissata-thiam-leonoff.vcf';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)
 }
 setLanguage('fr');
