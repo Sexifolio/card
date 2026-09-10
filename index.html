@@ -14,6 +14,89 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="manifest" href="site.webmanifest" />
   <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* Galerie médias — règles locales pour un rendu identique en local et en ligne */
+    #galerie .gallery-grid {
+      display: grid !important;
+      grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+      grid-auto-flow: row !important;
+      align-items: start !important;
+      gap: 20px !important;
+    }
+
+    #galerie .gallery-item {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      height: auto !important;
+    }
+
+    #galerie .video-item.is-landscape {
+      grid-column: span 6 !important;
+    }
+
+    #galerie .video-item.is-portrait {
+      grid-column: span 4 !important;
+    }
+
+    #galerie .gallery-item[data-type="photo"],
+    #galerie .gallery-item[data-type="document"] {
+      grid-column: span 4 !important;
+    }
+
+    #galerie .gallery-item[data-video="2"] { order: 1 !important; }
+    #galerie .gallery-item[data-video="4"] { order: 2 !important; }
+    #galerie .gallery-item[data-video="1"] { order: 3 !important; }
+    #galerie .gallery-item[data-video="3"] { order: 4 !important; }
+    #galerie .gallery-item[data-video="5"] { order: 5 !important; }
+    #galerie .gallery-item[data-video="6"] { order: 6 !important; }
+    #galerie .gallery-item[data-video="7"] { order: 7 !important; }
+    #galerie .gallery-item[data-type="photo"] { order: 20 !important; }
+    #galerie .gallery-item[data-type="document"] { order: 30 !important; }
+
+    #galerie .gallery-video {
+      display: block !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+      margin: 0 !important;
+      object-fit: contain !important;
+      background: #071b31;
+    }
+
+    #galerie .video-item.is-landscape .gallery-video {
+      aspect-ratio: 16 / 9;
+    }
+
+    #galerie .video-item.is-portrait .gallery-video {
+      aspect-ratio: 9 / 16;
+    }
+
+    #galerie .gallery-item figcaption {
+      flex: 1;
+    }
+
+    @media (max-width: 900px) {
+      #galerie .video-item.is-landscape,
+      #galerie .gallery-item[data-type="photo"],
+      #galerie .gallery-item[data-type="document"] {
+        grid-column: span 12 !important;
+      }
+
+      #galerie .video-item.is-portrait {
+        grid-column: span 6 !important;
+      }
+    }
+
+    @media (max-width: 600px) {
+      #galerie .video-item.is-landscape,
+      #galerie .video-item.is-portrait,
+      #galerie .gallery-item[data-type="photo"],
+      #galerie .gallery-item[data-type="document"] {
+        grid-column: span 12 !important;
+      }
+    }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Aller au contenu</a>
@@ -271,8 +354,8 @@
     <section class="page" id="galerie" data-tab="galerie" aria-labelledby="gallery-title">
       <div class="page-hero navy-bg">
         <div class="container compact-head">
-          <p class="eyebrow"><i class="fa-regular fa-images"></i> Galerie photos - vidéos</p>
-          <h1 id="gallery-title">Photos, documents et capsules vidéo du projet</h1>
+          <p class="eyebrow"><i class="fa-regular fa-images"></i> Médias</p>
+          <h1 id="gallery-title">Le PAEB en images</h1>
           <p>Découvrez les entreprises bénéficiaires, les activités de terrain et les temps forts du programme.</p>
         </div>
       </div>
@@ -285,49 +368,49 @@
       </div>
 
       <div class="container gallery-grid">
-        <figure class="gallery-item video-item is-portrait" data-type="video">
+        <figure class="gallery-item video-item is-portrait" data-type="video" data-video="1">
           <video class="gallery-video" controls preload="metadata" playsinline>
             <source src="assets/PAEB_ (1).mp4" type="video/mp4" />
             Votre navigateur ne prend pas en charge la lecture vidéo.
           </video>
           <figcaption><i class="fa-solid fa-video"></i> Visite de la ministre des Petites et Moyennes Entreprises et de la Promotion de l’Emploi à la SORAL</figcaption>
         </figure>
-        <figure class="gallery-item video-item is-landscape" data-type="video">
+        <figure class="gallery-item video-item is-landscape" data-type="video" data-video="2">
           <video class="gallery-video" controls preload="metadata" playsinline>
             <source src="assets/PAEB_ (2).mp4" type="video/mp4" />
             Votre navigateur ne prend pas en charge la lecture vidéo.
           </video>
           <figcaption><i class="fa-solid fa-video"></i> L’impact du PAEB sur l’usine Orana</figcaption>
         </figure>
-        <figure class="gallery-item video-item is-portrait" data-type="video">
+        <figure class="gallery-item video-item is-portrait" data-type="video" data-video="3">
           <video class="gallery-video" controls preload="metadata" playsinline>
             <source src="assets/PAEB_ (3).mp4" type="video/mp4" />
             Votre navigateur ne prend pas en charge la lecture vidéo.
           </video>
           <figcaption><i class="fa-solid fa-video"></i> La cohorte du PAEB en Chine</figcaption>
         </figure>
-        <figure class="gallery-item video-item is-landscape" data-type="video">
+        <figure class="gallery-item video-item is-landscape" data-type="video" data-video="4">
           <video class="gallery-video" controls preload="metadata" playsinline>
             <source src="assets/PAEB_ (4).mp4" type="video/mp4" />
             Votre navigateur ne prend pas en charge la lecture vidéo.
           </video>
           <figcaption><i class="fa-solid fa-video"></i> Cohorte 2026 : matinée d’échanges et résultats</figcaption>
         </figure>
-        <figure class="gallery-item video-item is-portrait" data-type="video">
+        <figure class="gallery-item video-item is-portrait" data-type="video" data-video="5">
           <video class="gallery-video" controls preload="metadata" playsinline>
             <source src="assets/PAEB_ (5).mp4" type="video/mp4" />
             Votre navigateur ne prend pas en charge la lecture vidéo.
           </video>
           <figcaption><i class="fa-solid fa-video"></i> Parole au directeur général de LAA TV, bénéficiaire du suivi du PAEB</figcaption>
         </figure>
-        <figure class="gallery-item video-item is-portrait" data-type="video">
+        <figure class="gallery-item video-item is-portrait" data-type="video" data-video="6">
           <video class="gallery-video" controls preload="metadata" playsinline>
             <source src="assets/PAEB_ (6).mp4" type="video/mp4" />
             Votre navigateur ne prend pas en charge la lecture vidéo.
           </video>
           <figcaption><i class="fa-solid fa-video"></i> Parole à la promotrice de Garden Foods, bénéficiaire du suivi du PAEB</figcaption>
         </figure>
-        <figure class="gallery-item video-item is-portrait" data-type="video">
+        <figure class="gallery-item video-item is-portrait" data-type="video" data-video="7">
           <video class="gallery-video" controls preload="metadata" playsinline>
             <source src="assets/PAEB_ (7).mp4" type="video/mp4" />
             Votre navigateur ne prend pas en charge la lecture vidéo.
@@ -475,5 +558,19 @@
   </footer>
 
   <script src="js/script.js"></script>
+  <script>
+    /* Utilise les dimensions réelles de chaque MP4 dès que ses métadonnées sont disponibles. */
+    document.querySelectorAll('#galerie .gallery-video').forEach((video) => {
+      video.addEventListener('loadedmetadata', () => {
+        const item = video.closest('.video-item');
+        if (!item || !video.videoWidth || !video.videoHeight) return;
+
+        const landscape = video.videoWidth >= video.videoHeight;
+        item.classList.toggle('is-landscape', landscape);
+        item.classList.toggle('is-portrait', !landscape);
+        video.style.aspectRatio = `${video.videoWidth} / ${video.videoHeight}`;
+      });
+    });
+  </script>
 </body>
 </html>
