@@ -11,7 +11,7 @@
     .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:17px}select,button{height:44px;border:1px solid var(--line);border-radius:9px;background:#fff;padding:0 14px;font:inherit}button{cursor:pointer;font-weight:700}.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
     main{padding:28px 5vw 50px}.grid{display:grid;grid-template-columns:repeat(2,minmax(280px,520px));gap:28px;justify-content:center}.card{background:#fff;padding:16px;border:1px solid #e4e7ec;border-radius:16px;box-shadow:0 8px 30px #1018280a}.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.top h2{margin:0;font-size:18px}.top span{font-size:12px;color:var(--muted)}
     .map{width:100%;aspect-ratio:4/5;border-radius:9px;overflow:hidden;background:#eef4ff}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.status{min-height:22px;margin-top:12px;font-size:13px;color:#475467}.note{font-size:12px;margin-top:14px}.blue .leaflet-tile-pane{filter:grayscale(1) sepia(1) hue-rotate(178deg) saturate(3.5) brightness(.92)}
-    .leaflet-control-attribution{font-size:9px!important}.export-stage{position:fixed;left:-10000px;top:0;width:1280px;height:1600px}
+    .leaflet-control-attribution{font-size:9px!important}.export-stage{position:fixed;left:-10000px;top:0;width:1280px;height:1600px}.result{display:none;margin-top:12px;padding:10px;background:#eef4ff;border-radius:9px}.result.show{display:block}.result img{display:block;width:100%;height:auto;border-radius:6px;margin-bottom:9px}.result a{display:block;text-align:center;background:#003399;color:white;text-decoration:none;font-weight:700;padding:12px;border-radius:8px}
     @media(max-width:780px){.grid{grid-template-columns:1fr}.actions{grid-template-columns:1fr}}
   </style>
 </head>
@@ -20,8 +20,8 @@
     <div class="toolbar"><label for="style">Style :</label><select id="style"><option value="normal">Couleurs de la carte</option><option value="blue">Monochrome bleu</option></select><button id="reset">Recentrer les cartes</button></div><div class="status" id="status">Les cartes sont prêtes.</div>
   </header>
   <main><div class="grid">
-    <section class="card" data-id="benin"><div class="top"><h2>Carte du Bénin</h2><span>1280 × 1600 px</span></div><div id="benin" class="map"></div><div class="actions"><button class="export primary">Exporter en PNG HD</button><button class="center">Recentrer</button></div></section>
-    <section class="card" data-id="cotonou"><div class="top"><h2>Carte de Cotonou</h2><span>1280 × 1600 px</span></div><div id="cotonou" class="map"></div><div class="actions"><button class="export primary">Exporter en PNG HD</button><button class="center">Recentrer</button></div></section>
+    <section class="card" data-id="benin"><div class="top"><h2>Carte du Bénin</h2><span>1280 × 1600 px</span></div><div id="benin" class="map"></div><div class="actions"><button class="export primary">Générer le PNG HD</button><button class="center">Recentrer</button></div><div class="result"></div></section>
+    <section class="card" data-id="cotonou"><div class="top"><h2>Carte de Cotonou</h2><span>1280 × 1600 px</span></div><div id="cotonou" class="map"></div><div class="actions"><button class="export primary">Générer le PNG HD</button><button class="center">Recentrer</button></div><div class="result"></div></section>
   </div><p class="note">Données cartographiques © contributeurs OpenStreetMap. Connexion Internet nécessaire au chargement des cartes.</p></main>
   <div id="export-stage" class="export-stage"></div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -29,7 +29,7 @@
   <script>
     const configs={benin:{center:[9.32,2.31],zoom:7,file:'carte-benin-HD.png'},cotonou:{center:[6.37,2.43],zoom:12,file:'carte-cotonou-HD.png'}};
     const maps={};
-    function tile(){return L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,crossOrigin:true,attribution:'© OpenStreetMap'});}
+    function tile(){return L.tileLayer('https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',{maxZoom:20,crossOrigin:'anonymous',attribution:'© OpenStreetMap © CARTO'});}
     Object.entries(configs).forEach(([id,c])=>{maps[id]=L.map(id,{zoomControl:true,attributionControl:true}).setView(c.center,c.zoom);tile().addTo(maps[id]);});
     const style=document.querySelector('#style'),status=document.querySelector('#status');
     function applyStyle(){document.body.classList.toggle('blue',style.value==='blue');status.textContent=style.value==='blue'?'Mode monochrome bleu activé.':'Couleurs originales activées.'}style.onchange=applyStyle;
@@ -37,10 +37,11 @@
     document.querySelector('#reset').onclick=()=>Object.keys(maps).forEach(center);
     function bluePixels(canvas){const ctx=canvas.getContext('2d'),img=ctx.getImageData(0,0,canvas.width,canvas.height),d=img.data;for(let i=0;i<d.length;i+=4){const y=.299*d[i]+.587*d[i+1]+.114*d[i+2],t=y/255;d[i]=Math.round(238*t);d[i+1]=Math.round(51+(244-51)*t);d[i+2]=Math.round(153+(255-153)*t)}ctx.putImageData(img,0,0);}
     function exportMap(id){
-      status.textContent='Préparation du PNG HD…';const c=configs[id],stage=document.querySelector('#export-stage');stage.innerHTML='';
-      const temp=L.map(stage,{zoomControl:false,attributionControl:true,fadeAnimation:false,zoomAnimation:false}).setView(maps[id].getCenter(),maps[id].getZoom());
-      const layer=tile().addTo(temp);temp.invalidateSize();let done=false;
-      const render=()=>{if(done)return;done=true;setTimeout(()=>leafletImage(temp,(err,canvas)=>{if(err){status.textContent="L’export a échoué. Recharge la page puis réessaie.";temp.remove();return}if(style.value==='blue')bluePixels(canvas);const a=document.createElement('a');a.download=c.file;a.href=canvas.toDataURL('image/png');a.click();temp.remove();stage.innerHTML='';status.textContent='PNG HD exporté : 1280 × 1600 px.';}),250)};
+      status.textContent='Préparation du PNG HD avec ton cadrage exact…';const c=configs[id],stage=document.querySelector('#export-stage'),visibleBounds=maps[id].getBounds();stage.innerHTML='';
+      const temp=L.map(stage,{zoomControl:false,attributionControl:true,fadeAnimation:false,zoomAnimation:false,zoomSnap:0});
+      temp.invalidateSize();temp.fitBounds(visibleBounds,{padding:[0,0],animate:false});
+      const layer=tile().addTo(temp);let done=false;
+      const render=()=>{if(done)return;done=true;setTimeout(()=>leafletImage(temp,(err,canvas)=>{if(err){status.textContent="L’export a échoué. Recharge la page puis réessaie.";temp.remove();return}if(style.value==='blue')bluePixels(canvas);const url=canvas.toDataURL('image/png'),card=document.querySelector(`[data-id="${id}"]`),result=card.querySelector('.result');result.innerHTML='';const preview=new Image();preview.src=url;preview.alt='Aperçu du PNG généré';const link=document.createElement('a');link.href=url;link.download=c.file;link.textContent='Télécharger '+c.file;result.append(preview,link);result.classList.add('show');temp.remove();stage.innerHTML='';status.textContent='PNG HD généré. Utilise le nouveau bouton sous l’aperçu pour le télécharger.';}),250)};
       layer.once('load',render);setTimeout(render,3500);
     }
     document.querySelectorAll('.card').forEach(card=>{const id=card.dataset.id;card.querySelector('.center').onclick=()=>center(id);card.querySelector('.export').onclick=()=>exportMap(id)});
