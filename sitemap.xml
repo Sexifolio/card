@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://paeb.bj/</loc></url>
+  <url><loc>https://paeb.bj/a-propos.html</loc></url>
   <url><loc>https://paeb.bj/comment-postuler.html</loc></url>
   <url><loc>https://paeb.bj/actualites.html</loc></url>
   <url><loc>https://paeb.bj/actualites/cohorte-2026.html</loc></url>
+  <url><loc>https://paeb.bj/medias.html</loc></url>
   <url><loc>https://paeb.bj/resultats.html</loc></url>
+  <url><loc>https://paeb.bj/contacts.html</loc></url>
 </urlset>
