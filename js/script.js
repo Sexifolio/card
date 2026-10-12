@@ -56,3 +56,10 @@ const observer = 'IntersectionObserver' in window
 if (observer) {
   document.querySelectorAll('.page article, .page figure, .page aside, .intro-block').forEach(el => observer.observe(el));
 }
+
+// Mesure des clics sortants, activée automatiquement après configuration GA4.
+document.querySelectorAll('a[href^="https://epme.adpme.bj"]').forEach(link => {
+  link.addEventListener('click', () => {
+    if (typeof window.gtag === 'function') window.gtag('event', 'paeb_candidature_click', { event_category: 'engagement', destination: link.href });
+  });
+});
