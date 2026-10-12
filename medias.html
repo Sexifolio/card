@@ -273,30 +273,28 @@
   </script>
 <script async src="https://www.instagram.com/embed.js"></script>
 <script>
-document.querySelectorAll('.paeb-social-video').forEach(card => {
-  const provider = card.dataset.videoProvider;
+document.querySelectorAll('.paeb-social-video[data-video-provider="youtube"]').forEach((card, index) => {
   const frame = card.querySelector('iframe');
-  const link = card.querySelector('.paeb-video-info a');
-  if (!link) return;
-  if (provider === 'youtube' && frame) {
-    const id = new URL(frame.src).pathname.split('/').pop();
-    frame.src = 'https://www.youtube.com/embed/' + encodeURIComponent(id) + '?enablejsapi=1&origin=' + encodeURIComponent(location.origin);
-    frame.addEventListener('load', () => {
-      try { frame.contentWindow.postMessage(JSON.stringify({event:'listening',id:id}), 'https://www.youtube.com'); } catch (_) {}
-    });
-    card.dataset.youtubeId = id;
-  }
+  if (!frame) return;
+  const videoId = new URL(frame.src).pathname.split('/').pop();
+  const playerId = 'paeb-youtube-' + index;
+  frame.id = playerId;
+  frame.src = 'https://www.youtube.com/embed/' + encodeURIComponent(videoId) + '?enablejsapi=1&origin=' + encodeURIComponent(location.origin);
+  frame.addEventListener('load', () => {
+    const player = frame.contentWindow;
+    if (!player) return;
+    player.postMessage(JSON.stringify({event:'listening',id:playerId}), 'https://www.youtube.com');
+    player.postMessage(JSON.stringify({event:'command',func:'addEventListener',args:['onError'],id:playerId}), 'https://www.youtube.com');
+  });
 });
 window.addEventListener('message', event => {
-  if (!['https://www.youtube.com','https://www.youtube-nocookie.com'].includes(event.origin)) return;
+  if (event.origin !== 'https://www.youtube.com') return;
   let data=event.data;
   if (typeof data === 'string') { try {data=JSON.parse(data)} catch (_) {return;} }
-  if (!data || data.event !== 'onError') return;
-  const code=Number(data.info);
-  if (![100,101,150,153].includes(code)) return;
-  const cards=[...document.querySelectorAll('.paeb-social-video[data-video-provider="youtube"]')];
-  const card=cards.find(el => el.dataset.youtubeId===String(data.id)) || (cards.length===1?cards[0]:null);
-  if (card) card.hidden=true;
+  if (!data || data.event !== 'onError' || ![100,101,150].includes(Number(data.info))) return;
+  const frame = document.getElementById(String(data.id || ''));
+  const card = frame?.closest('.paeb-social-video');
+  if (card) card.hidden = true;
 });
 </script>
 </body>
