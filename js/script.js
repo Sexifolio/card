@@ -1,45 +1,7 @@
-const pages = [...document.querySelectorAll('[data-tab]')];
-const links = [...document.querySelectorAll('[data-tab-link]')];
-const nav = document.getElementById('mainNav');
-const menuToggle = document.getElementById('menuToggle');
-
-function closeMenu() {
-  if (!nav || !menuToggle) return;
-  nav.classList.remove('is-open');
-  menuToggle.setAttribute('aria-expanded', 'false');
-}
-
-function showTab(tabName, shouldPush = true) {
-  const target = pages.some(page => page.dataset.tab === tabName) ? tabName : 'accueil';
-  pages.forEach(page => page.classList.toggle('is-active', page.dataset.tab === target));
-  links.forEach(link => link.classList.toggle('is-active', link.dataset.tabLink === target));
-  document.body.dataset.page = target;
-
-  if (shouldPush) history.pushState({ tab: target }, '', `#${target}`);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  closeMenu();
-}
-
-links.forEach(link => {
-  link.addEventListener('click', event => {
-    event.preventDefault();
-    showTab(link.dataset.tabLink);
-  });
-});
-
-if (menuToggle) {
-  menuToggle.addEventListener('click', () => {
-    const isOpen = nav.classList.toggle('is-open');
-    menuToggle.setAttribute('aria-expanded', String(isOpen));
-  });
-}
-
-window.addEventListener('popstate', () => {
-  showTab(location.hash.replace('#', '') || 'accueil', false);
-});
-
-showTab(location.hash.replace('#', '') || 'accueil', false);
-
+const nav=document.getElementById('mainNav');
+const menuToggle=document.getElementById('menuToggle');
+if(nav&&menuToggle){menuToggle.addEventListener('click',()=>{const open=nav.classList.toggle('is-open');menuToggle.setAttribute('aria-expanded',String(open));});nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('is-open');menuToggle.setAttribute('aria-expanded','false');}));}
+const currentPath=location.pathname.replace(/\/$/,'/')||'/';document.querySelectorAll('.main-nav a').forEach(a=>{if(a.pathname===currentPath){a.classList.add('is-active');a.setAttribute('aria-current','page');}});
 const newsButtons = [...document.querySelectorAll('[data-filter]')];
 const newsCards = [...document.querySelectorAll('.news-card')];
 newsButtons.forEach(button => {
@@ -94,3 +56,10 @@ const observer = 'IntersectionObserver' in window
 if (observer) {
   document.querySelectorAll('.page article, .page figure, .page aside, .intro-block').forEach(el => observer.observe(el));
 }
+
+// Mesure des clics sortants, activée automatiquement après configuration GA4.
+document.querySelectorAll('a[href^="https://epme.adpme.bj"]').forEach(link => {
+  link.addEventListener('click', () => {
+    if (typeof window.gtag === 'function') window.gtag('event', 'paeb_candidature_click', { event_category: 'engagement', destination: link.href });
+  });
+});

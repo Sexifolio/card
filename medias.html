@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Médias PAEB Bénin — Vidéos et témoignages</title>
+  <meta name="description" content="Retrouvez les vidéos, témoignages d'entrepreneurs, événements et documents du Projet d'Appui à l'Entrepreneuriat au Bénin." />
+  <meta name="theme-color" content="#087cc2" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <link rel="canonical" href="https://paeb.bj/medias.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="fr_BJ" />
+  <meta property="og:site_name" content="PAEB — Projet d’Appui à l’Entrepreneuriat au Bénin" />
+  <meta property="og:title" content="Médias PAEB Bénin — Vidéos et témoignages" />
+  <meta property="og:description" content="Retrouvez les vidéos, témoignages d'entrepreneurs, événements et documents du Projet d'Appui à l'Entrepreneuriat au Bénin." />
+  <meta property="og:url" content="https://paeb.bj/medias.html" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="manifest" href="site.webmanifest" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* Galerie médias — règles locales pour un rendu identique en local et en ligne */
+    #galerie .gallery-grid {
+      display: grid !important;
+      grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+      grid-auto-flow: row !important;
+      align-items: start !important;
+      gap: 20px !important;
+    }
+
+    #galerie .gallery-item {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      height: auto !important;
+    }
+
+    #galerie .video-item.is-landscape {
+      grid-column: span 6 !important;
+    }
+
+    #galerie .video-item.is-portrait {
+      grid-column: span 4 !important;
+    }
+
+    #galerie .gallery-item[data-type="photo"],
+    #galerie .gallery-item[data-type="document"] {
+      grid-column: span 4 !important;
+    }
+
+    #galerie .gallery-item[data-video="2"] { order: 1 !important; }
+    #galerie .gallery-item[data-video="4"] { order: 2 !important; }
+    #galerie .gallery-item[data-video="1"] { order: 3 !important; }
+    #galerie .gallery-item[data-video="3"] { order: 4 !important; }
+    #galerie .gallery-item[data-video="5"] { order: 5 !important; }
+    #galerie .gallery-item[data-video="6"] { order: 6 !important; }
+    #galerie .gallery-item[data-video="7"] { order: 7 !important; }
+    #galerie .gallery-item[data-type="photo"] { order: 20 !important; }
+    #galerie .gallery-item[data-type="document"] { order: 30 !important; }
+
+    #galerie .gallery-video {
+      display: block !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+      margin: 0 !important;
+      object-fit: contain !important;
+      background: #071b31;
+    }
+
+    #galerie .video-item.is-landscape .gallery-video {
+      aspect-ratio: 16 / 9;
+    }
+
+    #galerie .video-item.is-portrait .gallery-video {
+      aspect-ratio: 9 / 16;
+    }
+
+    #galerie .gallery-item figcaption {
+      flex: 1;
+    }
+
+    @media (max-width: 900px) {
+      #galerie .video-item.is-landscape,
+      #galerie .gallery-item[data-type="photo"],
+      #galerie .gallery-item[data-type="document"] {
+        grid-column: span 12 !important;
+      }
+
+      #galerie .video-item.is-portrait {
+        grid-column: span 6 !important;
+      }
+    }
+
+    @media (max-width: 600px) {
+      #galerie .video-item.is-landscape,
+      #galerie .video-item.is-portrait,
+      #galerie .gallery-item[data-type="photo"],
+      #galerie .gallery-item[data-type="document"] {
+        grid-column: span 12 !important;
+      }
+    }
+  </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Médias PAEB Bénin — Vidéos et témoignages","url":"https://paeb.bj/medias.html","inLanguage":"fr-BJ","isPartOf":{"@type":"WebSite","name":"PAEB Bénin","url":"https://paeb.bj/"}}</script><meta name="twitter:card" content="summary"><meta name="twitter:title" content="PAEB Bénin — Entrepreneuriat et PME"><meta name="twitter:description" content="Projet d’Appui à l’Entrepreneuriat au Bénin : candidatures, appuis, résultats et actualités."></head>
+<body>
+  <a class="skip-link" href="#main">Aller au contenu</a>
+
+  <header class="site-header" id="top">
+    <div class="color-strip" aria-hidden="true">
+      <span class="blue"></span><span class="green"></span><span class="yellow"></span><span class="red"></span>
+    </div>
+
+    <div class="container nav-wrap">
+      <a href="/" class="brand" aria-label="Accueil PAEB">
+        <img src="https://i.postimg.cc/X7S4pPMM/paeb.png" onerror="this.onerror=null;this.src='assets/favicon.svg';" alt="PAEB" />
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="main-nav" id="mainNav" aria-label="Navigation principale">
+        <a href="/a-propos.html">À propos</a>
+        <a href="/comment-postuler.html">Comment postuler</a>
+        <a href="/actualites.html">Actualités</a>
+        <a href="/medias.html">Médias</a>
+        <a href="/resultats.html">Résultats</a>
+        <a href="/contacts.html">Contacts</a>
+      </nav>
+
+      <a class="nav-cta" href="https://epme.adpme.bj" target="_blank" rel="noopener">
+        <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+        Candidater
+      </a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page is-active" id="galerie" aria-labelledby="gallery-title">
+      <div class="page-hero navy-bg">
+        <div class="container compact-head">
+          <p class="eyebrow"><i class="fa-regular fa-images"></i> Médias</p>
+          <h1 id="gallery-title">Le PAEB en images</h1>
+          <p>Découvrez les entreprises bénéficiaires, les activités de terrain et les temps forts du programme.</p>
+        </div>
+      </div>
+
+      <div class="container toolbar" aria-label="Filtres galerie">
+        <button class="chip gallery-filter is-active" type="button" data-gallery="all">Tout</button>
+        <button class="chip gallery-filter" type="button" data-gallery="photo">Photos</button>
+        <button class="chip gallery-filter" type="button" data-gallery="video">Vidéos</button>
+        <button class="chip gallery-filter" type="button" data-gallery="document">Documents</button>
+      </div>
+
+      <div class="container gallery-grid">
+        <figure class="gallery-item video-item is-portrait" data-type="video" data-video="1">
+          <video class="gallery-video" controls preload="metadata" playsinline>
+            <source src="assets/PAEB_ (1).mp4" type="video/mp4" />
+            Votre navigateur ne prend pas en charge la lecture vidéo.
+          </video>
+          <figcaption><i class="fa-solid fa-video"></i> Visite de la ministre des Petites et Moyennes Entreprises et de la Promotion de l’Emploi à la SORAL</figcaption>
+        </figure>
+        <figure class="gallery-item video-item is-landscape" data-type="video" data-video="2">
+          <video class="gallery-video" controls preload="metadata" playsinline>
+            <source src="assets/PAEB_ (2).mp4" type="video/mp4" />
+            Votre navigateur ne prend pas en charge la lecture vidéo.
+          </video>
+          <figcaption><i class="fa-solid fa-video"></i> L’impact du PAEB sur l’usine Orana</figcaption>
+        </figure>
+        <figure class="gallery-item video-item is-portrait" data-type="video" data-video="3">
+          <video class="gallery-video" controls preload="metadata" playsinline>
+            <source src="assets/PAEB_ (3).mp4" type="video/mp4" />
+            Votre navigateur ne prend pas en charge la lecture vidéo.
+          </video>
+          <figcaption><i class="fa-solid fa-video"></i> La cohorte du PAEB en Chine</figcaption>
+        </figure>
+        <figure class="gallery-item video-item is-landscape" data-type="video" data-video="4">
+          <video class="gallery-video" controls preload="metadata" playsinline>
+            <source src="assets/PAEB_ (4).mp4" type="video/mp4" />
+            Votre navigateur ne prend pas en charge la lecture vidéo.
+          </video>
+          <figcaption><i class="fa-solid fa-video"></i> Cohorte 2026 : matinée d’échanges et résultats</figcaption>
+        </figure>
+        <figure class="gallery-item video-item is-portrait" data-type="video" data-video="5">
+          <video class="gallery-video" controls preload="metadata" playsinline>
+            <source src="assets/PAEB_ (5).mp4" type="video/mp4" />
+            Votre navigateur ne prend pas en charge la lecture vidéo.
+          </video>
+          <figcaption><i class="fa-solid fa-video"></i> Parole au directeur général de LAA TV, bénéficiaire du suivi du PAEB</figcaption>
+        </figure>
+        <figure class="gallery-item video-item is-portrait" data-type="video" data-video="6">
+          <video class="gallery-video" controls preload="metadata" playsinline>
+            <source src="assets/PAEB_ (6).mp4" type="video/mp4" />
+            Votre navigateur ne prend pas en charge la lecture vidéo.
+          </video>
+          <figcaption><i class="fa-solid fa-video"></i> Parole à la promotrice de Garden Foods, bénéficiaire du suivi du PAEB</figcaption>
+        </figure>
+        <figure class="gallery-item video-item is-portrait" data-type="video" data-video="7">
+          <video class="gallery-video" controls preload="metadata" playsinline>
+            <source src="assets/PAEB_ (7).mp4" type="video/mp4" />
+            Votre navigateur ne prend pas en charge la lecture vidéo.
+          </video>
+          <figcaption><i class="fa-solid fa-video"></i> Paroles à la promotrice de Safa et Marwa et au directeur général de Fund Lab, bénéficiaires du suivi du PAEB</figcaption>
+        </figure>
+        <figure class="gallery-item" data-type="photo">
+          <img src="assets/photo-businesswoman.png" alt="Entrepreneure bénéficiaire" />
+          <figcaption><i class="fa-regular fa-image"></i> PME accompagnée</figcaption>
+        </figure>
+        <figure class="gallery-item" data-type="photo">
+          <img src="assets/photo-entrepreneur.png" alt="Entrepreneur bénéficiaire" />
+          <figcaption><i class="fa-regular fa-image"></i> Bénéficiaire du programme</figcaption>
+        </figure>
+        <figure class="gallery-item" data-type="photo">
+          <img src="assets/women-tablet.jpg" alt="Entrepreneure avec tablette" />
+          <figcaption><i class="fa-regular fa-image"></i> Activités de terrain</figcaption>
+        </figure>
+        <figure class="gallery-item" data-type="document">
+          <img src="assets/plaquette-page-1.png" alt="Aperçu de la plaquette PAEB" />
+          <figcaption><i class="fa-regular fa-file-lines"></i> Plaquette officielle</figcaption>
+        </figure>
+        <figure class="gallery-item" data-type="document">
+          <img src="assets/plaquette-page-3.png" alt="Résultats de la plaquette PAEB" />
+          <figcaption><i class="fa-regular fa-file-lines"></i> Résultats & chiffres clés</figcaption>
+        </figure>
+      </div>
+    </section>
+
+  
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-main">
+      <img class="footer-logo" src="https://i.postimg.cc/X7S4pPMM/paeb.png" onerror="this.onerror=null;this.src='assets/favicon.svg';" alt="Logo PAEB" />
+      <p>Projet d’Appui à l’Entrepreneuriat au Bénin — Accélérer la croissance des PMEs béninoises.</p>
+      <a href="#top" class="footer-link">Retour en haut <i class="fa-solid fa-arrow-up"></i></a>
+    </div>
+    <div class="container footer-partners">
+      <img src="https://i.postimg.cc/05dPKf92/Pied-De-Page-PAEB-2.png" onerror="this.onerror=null;this.src='assets/favicon.svg';" alt="Maitrise d’ouvrage délégué, financement et accompagnement du PAEB" />
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+  <script>
+    /* Utilise les dimensions réelles de chaque MP4 dès que ses métadonnées sont disponibles. */
+    document.querySelectorAll('#galerie .gallery-video').forEach((video) => {
+      video.addEventListener('loadedmetadata', () => {
+        const item = video.closest('.video-item');
+        if (!item || !video.videoWidth || !video.videoHeight) return;
+
+        const landscape = video.videoWidth >= video.videoHeight;
+        item.classList.toggle('is-landscape', landscape);
+        item.classList.toggle('is-portrait', !landscape);
+        video.style.aspectRatio = `${video.videoWidth} / ${video.videoHeight}`;
+      });
+    });
+  </script>
+</body>
+</html>
