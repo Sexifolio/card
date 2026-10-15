@@ -1,0 +1,24 @@
+# PAEB - Apache / mod_rewrite (installer a la racine du site)
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# URL publique canonique : HTTPS
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# Rediriger explicitement index.html a la racine
+RewriteRule ^index\.html$ / [R=301,L,NC]
+
+# Rediriger les fichiers HTML demandes directement vers des URLs propres
+RewriteCond %{THE_REQUEST} \s/+([^?\s]+?)\.html(?:[?\s]) [NC]
+RewriteRule ^(.+)\.html$ /$1 [R=301,L,NE]
+
+# Servir les fichiers physiques et dossiers existants normalement
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Router /rubrique/page vers /rubrique/page.html sans redirection
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+?)/?$ $1.html [L]
+</IfModule>
