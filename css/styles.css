@@ -182,3 +182,8 @@ input,select,textarea{width:100%;border:1px solid var(--line);border-radius:16px
 .paeb-suggestion-form textarea{background:#fff;min-height:155px}
 .paeb-suggestion-note{font-size:.8rem;line-height:1.6;margin:10px 0 20px}
 @media(max-width:800px){.paeb-suggestion-section{grid-template-columns:1fr;gap:20px;padding:40px 0 4px}}
+
+/* Bandeau institutionnel PAEB : image transparente, sans cadre décoratif */
+.footer-partners{padding:10px 0 32px}
+.footer-partners img{display:block;width:100%;height:auto;max-width:100%;object-fit:contain;background:transparent;border:0;border-radius:0;padding:0}
+@media(max-width:700px){.footer-partners{overflow-x:auto;overscroll-behavior-inline:contain}.footer-partners img{width:900px;min-width:900px;max-width:none}.footer-partners{padding-bottom:20px}}
