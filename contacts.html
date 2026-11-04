@@ -143,6 +143,22 @@
         </div>
       </div>
 
+      <section class="container paeb-suggestion-section" aria-labelledby="suggestion-title">
+        <div class="paeb-suggestion-intro">
+          <p class="eyebrow blue"><i class="fa-regular fa-comment-dots" aria-hidden="true"></i> Votre avis compte</p>
+          <h2 id="suggestion-title">Boîte à suggestions</h2>
+          <p>Une idée pour améliorer les services du PAEB ? Partagez-la sans indiquer votre nom ni votre adresse e-mail. Évitez toute information permettant de vous identifier.</p>
+        </div>
+        <form class="paeb-suggestion-form" action="https://formsubmit.co/secretariatpaeb@adpme.bj" method="POST">
+          <input type="hidden" name="_subject" value="Suggestion sans coordonnées — Site PAEB" />
+          <input type="hidden" name="_url" value="https://paeb.bj/contacts" />
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true" />
+          <label for="anonymousSuggestion">Votre suggestion</label>
+          <textarea id="anonymousSuggestion" name="Suggestion" rows="5" maxlength="3000" placeholder="Écrivez votre idée ou votre proposition..." required></textarea>
+          <p class="paeb-suggestion-note">Aucun nom ni e-mail n’est demandé. L’envoi passe par un service externe de traitement de formulaires.</p>
+          <button class="btn primary" type="submit">Envoyer ma suggestion</button>
+        </form>
+      </section>
       <div class="container contact-grid section-pad-sm">
         <div class="contact-cards reveal">
           <article>
