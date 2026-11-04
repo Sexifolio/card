@@ -72,3 +72,35 @@ document.querySelectorAll('a.footer-link[href="#top"]').forEach(link => {
     window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   });
 });
+
+
+// Boutons Copier des coordonnées : Clipboard API et solution de repli.
+const copyStatus = document.getElementById('copyStatus');
+document.querySelectorAll('.paeb-copy-btn[data-copy]').forEach(button => {
+  button.addEventListener('click', async () => {
+    const value = button.dataset.copy;
+    const span = button.querySelector('span');
+    const oldLabel = span ? span.textContent : '';
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(value);
+      } else {
+        const field = document.createElement('textarea');
+        field.value = value;
+        field.style.position = 'fixed';
+        field.style.opacity = '0';
+        document.body.appendChild(field);
+        field.focus();
+        field.select();
+        const copied = document.execCommand('copy');
+        field.remove();
+        if (!copied) throw new Error('Copie indisponible');
+      }
+      if (span) span.textContent = 'Copié !';
+      if (copyStatus) copyStatus.textContent = 'Coordonnée copiée dans le presse-papiers.';
+      window.setTimeout(() => { if (span) span.textContent = oldLabel; }, 1800);
+    } catch (error) {
+      if (copyStatus) copyStatus.textContent = 'Impossible de copier automatiquement. Sélectionnez le texte pour le copier.';
+    }
+  });
+});
