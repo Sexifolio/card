@@ -63,3 +63,12 @@ document.querySelectorAll('a[href^="https://epme.adpme.bj"]').forEach(link => {
     if (typeof window.gtag === 'function') window.gtag('event', 'paeb_candidature_click', { event_category: 'engagement', destination: link.href });
   });
 });
+
+
+// Retour en haut fiable sur toutes les pages (y compris après navigation).
+document.querySelectorAll('a.footer-link[href="#top"]').forEach(link => {
+  link.addEventListener('click', event => {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  });
+});
