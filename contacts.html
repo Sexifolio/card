@@ -143,22 +143,49 @@
         </div>
       </div>
 
-      <section class="container paeb-suggestion-section" aria-labelledby="suggestion-title">
-        <div class="paeb-suggestion-intro">
-          <p class="eyebrow blue"><i class="fa-regular fa-comment-dots" aria-hidden="true"></i> Votre avis compte</p>
-          <h2 id="suggestion-title">Boîte à suggestions</h2>
-          <p>Une idée pour améliorer les services du PAEB ? Partagez-la sans indiquer votre nom ni votre adresse e-mail. Évitez toute information permettant de vous identifier.</p>
+      <div class="container paeb-contact-layout section-pad-sm">
+        <div class="paeb-contact-left">
+          <div class="paeb-contact-heading">
+            <p class="eyebrow blue">Nous contacter</p>
+            <h2>Coordonnées du PAEB</h2>
+            <p>Retrouvez nos coordonnées ou préparez un message à destination de notre équipe.</p>
+          </div>
+          <div class="contact-cards">
+            <article><i class="fa-solid fa-location-dot" aria-hidden="true"></i><div><small>Adresse</small><strong>Villa PAEB les Cocotiers, lot L2</strong></div><button class="paeb-copy-btn" type="button" data-copy="Villa PAEB les Cocotiers, lot L2" aria-label="Copier l’adresse"><i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copier</span></button></article>
+            <article><i class="fa-regular fa-envelope" aria-hidden="true"></i><div><small>Email</small><a href="mailto:secretariatpaeb@adpme.bj">secretariatpaeb@adpme.bj</a></div><button class="paeb-copy-btn" type="button" data-copy="secretariatpaeb@adpme.bj" aria-label="Copier l’adresse email"><i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copier</span></button></article>
+            <article><i class="fa-solid fa-phone" aria-hidden="true"></i><div><small>Téléphone</small><a href="tel:+2290155884141">01 55 88 41 41</a></div><button class="paeb-copy-btn" type="button" data-copy="+2290155884141" aria-label="Copier le numéro de téléphone"><i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copier</span></button></article>
+            <article><i class="fa-solid fa-globe" aria-hidden="true"></i><div><small>Plateforme e-PME</small><a href="https://epme.adpme.bj" target="_blank" rel="noopener noreferrer">epme.adpme.bj</a></div><button class="paeb-copy-btn" type="button" data-copy="https://epme.adpme.bj" aria-label="Copier le lien de la plateforme"><i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copier</span></button></article>
+          </div>
+          <p id="copyStatus" class="paeb-copy-status" role="status" aria-live="polite"></p>
+          <form class="panel contact-form" id="contactForm">
+            <h3>Envoyer un message</h3>
+            <p>Rédigez votre demande : votre application de messagerie préparera l’email.</p>
+            <label>Nom complet<input type="text" name="name" placeholder="Votre nom" required /></label>
+            <label>Email<input type="email" name="email" placeholder="votre@email.com" required /></label>
+            <label>Sujet<select name="subject" required><option value="Demande d'information PAEB">Demande d’information</option><option value="Candidature PAEB">Candidature</option><option value="Partenariat PAEB">Partenariat</option><option value="Presse PAEB">Presse / Actualités</option></select></label>
+            <label>Message<textarea name="message" rows="4" placeholder="Votre message" required></textarea></label>
+            <button class="btn primary" type="submit">Préparer l’email <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></button>
+            <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+          </form>
         </div>
-        <form class="paeb-suggestion-form" action="https://formsubmit.co/secretariatpaeb@adpme.bj" method="POST">
-          <input type="hidden" name="_subject" value="Suggestion sans coordonnées — Site PAEB" />
-          <input type="hidden" name="_url" value="https://paeb.bj/contacts" />
-          <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true" />
-          <label for="anonymousSuggestion">Votre suggestion</label>
-          <textarea id="anonymousSuggestion" name="Suggestion" rows="5" maxlength="3000" placeholder="Écrivez votre idée ou votre proposition..." required></textarea>
-          <p class="paeb-suggestion-note">Aucun nom ni e-mail n’est demandé. L’envoi passe par un service externe de traitement de formulaires.</p>
-          <button class="btn primary" type="submit">Envoyer ma suggestion</button>
-        </form>
-      </section>
+        <aside class="paeb-contact-right" aria-labelledby="suggestion-title">
+          <div class="paeb-suggestion-card">
+            <span class="paeb-suggestion-icon"><i class="fa-regular fa-comment-dots" aria-hidden="true"></i></span>
+            <p class="eyebrow blue">Votre avis compte</p>
+            <h2 id="suggestion-title">Boîte à suggestions</h2>
+            <p>Une idée pour améliorer les services du PAEB ? Partagez-la librement, sans renseigner vos coordonnées.</p>
+            <form class="paeb-suggestion-form" action="https://formsubmit.co/secretariatpaeb@adpme.bj" method="POST">
+              <input type="hidden" name="_subject" value="Suggestion reçue depuis PAEB.BJ" />
+              <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true" />
+              <label for="anonymousSuggestion">Votre suggestion</label>
+              <textarea id="anonymousSuggestion" name="Suggestion" rows="8" maxlength="3000" placeholder="Décrivez votre idée, votre expérience ou votre proposition..." required></textarea>
+              <button class="btn primary" type="submit">Envoyer ma suggestion <i class="fa-solid fa-paper-plane" aria-hidden="true"></i></button>
+            </form>
+            <p class="paeb-suggestion-privacy">Sans nom ni adresse email demandés. Évitez de partager des informations personnelles dans votre texte.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
       <div class="container contact-grid section-pad-sm">
         <div class="contact-cards reveal">
           <article>
