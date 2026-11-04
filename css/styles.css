@@ -163,3 +163,12 @@ input,select,textarea{width:100%;border:1px solid var(--line);border-radius:16px
 @media (max-width:720px){
   .container{width:min(100% - 28px, var(--container))}.nav-wrap{height:76px}.brand img{width:142px}.main-nav{top:76px}.section-pad{padding:52px 0}.section-pad-sm{padding:44px 0}h1{font-size:2.45rem}h2{font-size:2rem}.hero-grid{gap:34px}.hero-visual{justify-items:center}.hero-visual img{height:420px;width:100%;border-radius:24px}.quote-box{position:relative;left:auto;bottom:auto;margin-top:-34px;width:calc(100% - 32px)}.stats-row,.service-grid,.news-grid,.gallery-grid,.ecosystem-grid{grid-template-columns:1fr}.stats-row{margin-top:18px}.intro-block{padding:52px 0}.intro-block p:last-child{margin-top:0}.page-hero{padding:50px 0}.timeline article{grid-template-columns:1fr}.gallery-item img,.video-card{height:245px}.big{font-size:2.8rem}
 }
+
+/* Mise en valeur du financement disponible sur l'accueil */
+.paeb-financing-highlight{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);align-items:center;gap:42px;margin-top:64px;margin-bottom:28px;padding:clamp(28px,5vw,58px);border:1px solid var(--line);border-radius:var(--radius);background:var(--paeb-blue-soft)}
+.paeb-financing-highlight h2{font-size:clamp(1.8rem,3vw,3.1rem);line-height:1.14}
+.paeb-financing-highlight p:last-child{margin-bottom:0}
+.paeb-financing-number{display:flex;flex-direction:column;gap:12px;align-items:flex-start;justify-content:center}
+.paeb-financing-number strong{display:block;color:var(--paeb-blue);font-size:clamp(3.2rem,6vw,5.8rem);font-weight:900;line-height:1;letter-spacing:-.07em}
+.paeb-financing-number span{font-size:clamp(1.05rem,1.55vw,1.35rem);font-weight:700;line-height:1.5;color:var(--paeb-navy)}
+@media(max-width:800px){.paeb-financing-highlight{grid-template-columns:1fr;gap:22px;margin-top:36px}.paeb-financing-number strong{font-size:clamp(2.8rem,12vw,4.5rem)}}
