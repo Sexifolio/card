@@ -172,3 +172,13 @@ input,select,textarea{width:100%;border:1px solid var(--line);border-radius:16px
 .paeb-financing-number strong{display:block;color:var(--paeb-blue);font-size:clamp(3.2rem,6vw,5.8rem);font-weight:900;line-height:1;letter-spacing:-.07em}
 .paeb-financing-number span{font-size:clamp(1.05rem,1.55vw,1.35rem);font-weight:700;line-height:1.5;color:var(--paeb-navy)}
 @media(max-width:800px){.paeb-financing-highlight{grid-template-columns:1fr;gap:22px;margin-top:36px}.paeb-financing-number strong{font-size:clamp(2.8rem,12vw,4.5rem)}}
+
+/* Boîte à suggestions sur la page contact */
+.paeb-suggestion-section{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:36px;align-items:start;padding:60px 0 24px}
+.paeb-suggestion-section h2{font-size:clamp(1.8rem,3vw,2.8rem)}
+.paeb-suggestion-intro>p:last-child{max-width:520px}
+.paeb-suggestion-form{padding:clamp(20px,3vw,32px);border:1px solid var(--line);border-radius:var(--radius);background:var(--soft)}
+.paeb-suggestion-form label{display:block;font-weight:800;color:var(--paeb-navy);margin-bottom:10px}
+.paeb-suggestion-form textarea{background:#fff;min-height:155px}
+.paeb-suggestion-note{font-size:.8rem;line-height:1.6;margin:10px 0 20px}
+@media(max-width:800px){.paeb-suggestion-section{grid-template-columns:1fr;gap:20px;padding:40px 0 4px}}
