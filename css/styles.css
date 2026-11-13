@@ -215,4 +215,3 @@ input,select,textarea{width:100%;border:1px solid var(--line);border-radius:16px
 
 /* Accueil ALLMANY : conserver toute la hauteur et le sujet à droite. */
 .hero-visual-allmany img{width:min(100%,430px);height:auto;aspect-ratio:4 / 5;object-fit:cover;object-position:77% center}
-.hero-visual-allmany .quote-box{position:static;inset:auto;width:min(100%,430px);margin:16px 0 0}
